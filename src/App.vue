@@ -1,6 +1,6 @@
-// App.vue
 <template>
-  <div>
+  <div class="p-8">
+    <h1 class="text-2xl font-bold mb-4">STL Editor</h1>
     <InputForm @update-dimensions="updateDimensions" />
     <ModelViewer :width="width" :length="length" />
   </div>
@@ -13,7 +13,7 @@ import ModelViewer from './components/ModelViewer.vue';
 export default {
   components: { InputForm, ModelViewer },
   data() {
-    return { width: 10, length: 10 };
+    return { width: 51, length: 68 };
   },
   methods: {
     updateDimensions(dimensions) {
@@ -23,4 +23,3 @@ export default {
   }
 };
 </script>
-

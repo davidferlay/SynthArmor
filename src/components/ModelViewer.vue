@@ -1,6 +1,8 @@
 <template>
-  <canvas ref="canvas"></canvas>
-  <button @click="downloadSTL">Download STL</button>
+  <div>
+    <canvas ref="canvas" class="border border-gray-300 rounded-md"></canvas>
+    <button @click="downloadSTL" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Download STL</button>
+  </div>
 </template>
 
 <script>
@@ -17,10 +19,10 @@ export default {
   methods: {
     initScene() {
       this.scene = new THREE.Scene();
-      this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      this.renderer = new THREE.WebGLRenderer({ canvas: this.$refs.canvas });
+      this.camera = new THREE.PerspectiveCamera(75, 500 / 500, 0.1, 1000);
+      this.renderer = new THREE.WebGLRenderer({ canvas: this.$refs.canvas, antialias: true });
       this.renderer.setSize(500, 500);
-      this.camera.position.z = 50;
+      this.camera.position.z = 100;
       this.loadModel();
     },
     loadModel() {
@@ -33,12 +35,12 @@ export default {
     },
     updateModel() {
       if (this.mesh) {
-        this.mesh.scale.set(this.width / 10, this.length / 10, 1);
+        this.mesh.scale.set(this.width / 51, this.length / 68, 1);
         this.renderScene();
       }
     },
     renderScene() {
-      requestAnimationFrame(() => this.renderer.render(this.scene, this.camera));
+      this.renderer.render(this.scene, this.camera);
     },
     downloadSTL() {
       const exporter = new STLExporter();
