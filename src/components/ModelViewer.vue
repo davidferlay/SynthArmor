@@ -9,6 +9,7 @@
 import * as THREE from 'three';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 import { STLExporter } from 'three/examples/jsm/exporters/STLExporter.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'; // Import OrbitControls
 
 export default {
   props: ['width', 'length'],
@@ -40,6 +41,14 @@ export default {
       directionalLight.position.set(1, 1, 1).normalize();
       this.scene.add(directionalLight);
 
+      // Add OrbitControls
+      this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+      this.controls.enableDamping = true; // Add smooth damping for a more natural feel
+      this.controls.dampingFactor = 0.05; // Adjust damping strength
+      this.controls.screenSpacePanning = true; // Allow panning with the mouse
+      this.controls.minDistance = 50; // Minimum zoom distance
+      this.controls.maxDistance = 500; // Maximum zoom distance
+
       // Load the 3D model
       this.loadModel();
 
@@ -61,6 +70,7 @@ export default {
     },
     animate() {
       requestAnimationFrame(this.animate);
+      this.controls.update(); // Update controls in the animation loop
       this.renderer.render(this.scene, this.camera);
     },
     downloadSTL() {
