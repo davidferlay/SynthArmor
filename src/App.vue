@@ -6,7 +6,7 @@
     <div class="mb-8 text-center">
       <h1 class="text-4xl font-bold mb-2">SynthArmor</h1>
       <p class="text-gray-600">
-        Modify the dimensions of a 3D STL model and download your custom design instantly.
+        Modify the dimensions of a 3D model and download your custom design instantly.
       </p>
     </div>
 

@@ -13,29 +13,119 @@
 <script>
 import * as THREE from 'three';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
-import { STLExporter } from 'three/examples/jsm/exporters/STLExporter.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+
+// JSCAD geometry & STL serializer
+import { createGeometry } from '../jscad/geometry.js';
+import { serialize } from '@jscad/stl-serializer';
 
 export default {
   props: ['width', 'length'],
+
+  /**
+   * Store only reactive data in data().
+   * We'll keep Three.js objects in non-reactive fields below.
+   */
+  data() {
+    return {
+      stlData: null
+    };
+  },
+
+  /**
+   * Define non-reactive fields in created().
+   * This prevents Vue from wrapping them in a proxy.
+   */
+  created() {
+    this.scene = null;
+    this.camera = null;
+    this.renderer = null;
+    this.controls = null;
+    this.mesh = null;
+  },
+
   mounted() {
     this.initScene();
+    this.regenerateAndLoad();
   },
-  watch: {
-    width: 'updateModel',
-    length: 'updateModel'
-  },
-  methods: {
-    initScene() {
-      this.scene = new THREE.Scene();
 
-      // Camera
+  watch: {
+    width() {
+      this.regenerateAndLoad();
+    },
+    length() {
+      this.regenerateAndLoad();
+    }
+  },
+
+  methods: {
+    /**
+     * Build geometry in JavaScript via JSCAD, then serialize to STL string.
+     */
+    generateSTL(width, length) {
+      try {
+        // 1) Create geometry array with user parameters
+        const geometryArray = createGeometry({ width, length });
+
+        // 2) Convert geometry to ASCII STL
+        const stlDataArray = serialize({ binary: false }, geometryArray);
+        const stlString = stlDataArray.join('\n');
+
+        return stlString;
+      } catch (err) {
+        console.error('Error generating JSCAD geometry or STL:', err);
+        return null;
+      }
+    },
+
+    /**
+     * Regenerate geometry based on user inputs,
+     * produce an STL string, then load it into Three.js
+     */
+    regenerateAndLoad() {
+      // Clean up old mesh if any
+      if (this.mesh) {
+        this.scene.remove(this.mesh);
+        this.mesh.geometry.dispose();
+        this.mesh = null;
+      }
+
+      // Generate new STL from JSCAD geometry
+      const stlString = this.generateSTL(this.width, this.length);
+      if (!stlString) return;
+
+      // Store for the Download button
+      this.stlData = stlString;
+
+      // Convert the string into a Blob and load via STLLoader
+      const blob = new Blob([stlString], { type: 'text/plain' });
+      const blobURL = URL.createObjectURL(blob);
+
+      const loader = new STLLoader();
+      loader.load(
+        blobURL,
+        (geometry) => {
+          this.mesh = new THREE.Mesh(
+            geometry,
+            new THREE.MeshStandardMaterial({ color: 0x0077ff })
+          );
+          this.scene.add(this.mesh);
+        },
+        undefined,
+        (err) => {
+          console.error('STLLoader error:', err);
+        }
+      );
+    },
+
+    initScene() {
+      // Create Scene & Camera
+      this.scene = new THREE.Scene();
       this.camera = new THREE.PerspectiveCamera(75, 500 / 500, 0.1, 1000);
-      this.camera.position.z = 100;
-      this.camera.position.y = 50;
+      this.camera.position.set(0, 100, 200);
       this.camera.lookAt(0, 0, 0);
 
-      // Renderer
+      // Create Renderer
       this.renderer = new THREE.WebGLRenderer({
         canvas: this.$refs.canvas,
         antialias: true
@@ -57,40 +147,25 @@ export default {
       this.controls.dampingFactor = 0.05;
       this.controls.screenSpacePanning = true;
       this.controls.minDistance = 50;
-      this.controls.maxDistance = 500;
+      this.controls.maxDistance = 1000;
 
-      // Load model
-      this.loadModel();
-
-      // Begin animation
+      // Start the render loop
       this.animate();
     },
-    loadModel() {
-      const loader = new STLLoader();
-      loader.load('/model.stl', (geometry) => {
-        this.mesh = new THREE.Mesh(
-          geometry,
-          new THREE.MeshStandardMaterial({ color: 0x0077ff })
-        );
-        this.scene.add(this.mesh);
-        this.updateModel(); // Scale on load
-      });
-    },
-    updateModel() {
-      if (this.mesh) {
-        // scale based on props
-        this.mesh.scale.set(this.width / 51, this.length / 68, 1);
-      }
-    },
+
     animate() {
       requestAnimationFrame(this.animate);
       this.controls.update();
       this.renderer.render(this.scene, this.camera);
     },
+
+    /**
+     * Download the STL string as a file
+     */
     downloadSTL() {
-      const exporter = new STLExporter();
-      const stlString = exporter.parse(this.mesh);
-      const blob = new Blob([stlString], { type: 'application/octet-stream' });
+      if (!this.stlData) return;
+
+      const blob = new Blob([this.stlData], { type: 'application/octet-stream' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
       link.download = 'modified_model.stl';
@@ -101,6 +176,6 @@ export default {
 </script>
 
 <style scoped>
-/* Optional: any scoped CSS if you want to tweak further */
+/* Optional: any custom CSS */
 </style>
 

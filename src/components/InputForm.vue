@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     emitValues() {
-      // Emit the values to parent
+      // Emit the values to the parent App.vue
       this.$emit('update-dimensions', {
         width: this.width,
         length: this.length
