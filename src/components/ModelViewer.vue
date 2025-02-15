@@ -168,7 +168,7 @@ export default {
       const blob = new Blob([this.stlData], { type: 'application/octet-stream' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = 'modified_model.stl';
+      link.download = `SynthArmor_cover_${this.width}x${this.length}.stl`;
       link.click();
     }
   }
