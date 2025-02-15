@@ -31,8 +31,8 @@ export default {
   },
   data() {
     return {
-      width: 51,
-      length: 68
+      width: 155,
+      length: 105
     };
   },
   methods: {
