@@ -5,35 +5,40 @@ import { translate } from '@jscad/modeling/src/operations/transforms/translate.j
 export function createGeometry({ width, length }) {
   const mainHeight = 10;       // Height of the border pieces
   const borderThickness = 2.5; // Thickness of the borders
-  const extra = 5;           // Extra added to the border's primary dimension
+  const extra = 5;             // Extra added to the border's primary dimension
 
-  // Top border: extend width by 'extra' so it overhangs on both sides.
-  // Position it so its bottom edge aligns with the original top edge.
+  // Define a safety constant of 0.5mm to add to the main dimensions
+  const safety = 0.5;
+  const effectiveWidth = width + safety;
+  const effectiveLength = length + safety;
+
+  // Top border: extend width by 'extra' and position so its bottom aligns with the top edge of the main area.
   const top = translate(
-    [0, length / 2 + borderThickness / 2, 0],
-    cuboid({ size: [width + extra, borderThickness, mainHeight] })
+    [0, effectiveLength / 2 + borderThickness / 2, 0],
+    cuboid({ size: [effectiveWidth + extra, borderThickness, mainHeight] })
   );
 
-  // Bottom border: similar to the top border but at the bottom.
+  // Bottom border: similar to the top, but at the bottom.
   const bottom = translate(
-    [0, - (length / 2 + borderThickness / 2), 0],
-    cuboid({ size: [width + extra, borderThickness, mainHeight] })
+    [0, -effectiveLength / 2 - borderThickness / 2, 0],
+    cuboid({ size: [effectiveWidth + extra, borderThickness, mainHeight] })
   );
 
-  // Right border: extend the vertical dimension by 'extra'.
-  // Position it so its left edge aligns with the original right edge.
+  // Right border: extend the vertical dimension by 'extra' and position it so its left edge aligns with the right edge of the main area.
   const right = translate(
-    [width / 2 + borderThickness / 2, 0, 0],
-    cuboid({ size: [borderThickness, length + extra, mainHeight] })
+    [effectiveWidth / 2 + borderThickness / 2, 0, 0],
+    cuboid({ size: [borderThickness, effectiveLength + extra, mainHeight] })
   );
 
-  // Left border: similar to the right border but at the left.
+  // Left border: similar to the right border but positioned on the left.
   const left = translate(
-    [- (width / 2 + borderThickness / 2), 0, 0],
-    cuboid({ size: [borderThickness, length + extra, mainHeight] })
+    [-effectiveWidth / 2 - borderThickness / 2, 0, 0],
+    cuboid({ size: [borderThickness, effectiveLength + extra, mainHeight] })
   );
 
-  // Only the border pieces are returned (no internal cuboid)
+  // The main shallow cuboid (for reference only) is not rendered:
+  // const main = cuboid({ size: [effectiveWidth, effectiveLength, mainHeight] });
+
   return [top, bottom, right, left];
 }
 
