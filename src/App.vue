@@ -1,8 +1,7 @@
 <template>
-  <!-- Main container to center everything and give vertical spacing -->
-  <div class="max-w-2xl mx-auto min-h-screen flex flex-col justify-center items-center p-6">
-
-    <!-- Title and user-oriented description -->
+  <!-- Main container centers everything and adds vertical spacing -->
+  <div class="max-w-3xl mx-auto min-h-screen flex flex-col justify-center items-center p-6">
+    <!-- Title and description -->
     <div class="mb-8 text-center">
       <h1 class="text-4xl font-bold mb-2">SynthArmor</h1>
       <p class="text-gray-600">
@@ -10,12 +9,11 @@
       </p>
     </div>
 
-    <!-- Form & Viewer Container -->
-    <div class="w-full bg-white rounded shadow p-6">
+    <!-- White container with fixed max width so that the form and 3D render match in width -->
+    <div class="w-full max-w-[600px] bg-white rounded shadow p-6">
       <InputForm @update-dimensions="updateDimensions" />
       <ModelViewer :width="width" :length="length" />
     </div>
-
   </div>
 </template>
 
