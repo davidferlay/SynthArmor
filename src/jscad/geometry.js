@@ -3,37 +3,37 @@ import { cuboid } from '@jscad/modeling/src/primitives/index.js';
 import { translate } from '@jscad/modeling/src/operations/transforms/translate.js';
 
 export function createGeometry({ width, length }) {
-  const mainHeight = 10;         // Height of the main shape (shallow cuboid)
-  const borderThickness = 2.5;   // Thickness of the borders
+  const mainHeight = 10;       // Height of the border pieces
+  const borderThickness = 2.5; // Thickness of the borders
+  const extra = 5;           // Extra added to the border's primary dimension
 
-  // Main shallow cuboid (centered at the origin)
-  const main = cuboid({ size: [width, length, mainHeight] });
-
-  // Top border (runs along the top edge)
-  // Its center is translated upward so its bottom face touches the main cuboid.
+  // Top border: extend width by 'extra' so it overhangs on both sides.
+  // Position it so its bottom edge aligns with the original top edge.
   const top = translate(
     [0, length / 2 + borderThickness / 2, 0],
-    cuboid({ size: [width, borderThickness, mainHeight] })
+    cuboid({ size: [width + extra, borderThickness, mainHeight] })
   );
 
-  // Bottom border (runs along the bottom edge)
+  // Bottom border: similar to the top border but at the bottom.
   const bottom = translate(
     [0, - (length / 2 + borderThickness / 2), 0],
-    cuboid({ size: [width, borderThickness, mainHeight] })
+    cuboid({ size: [width + extra, borderThickness, mainHeight] })
   );
 
-  // Right border (runs along the right edge)
+  // Right border: extend the vertical dimension by 'extra'.
+  // Position it so its left edge aligns with the original right edge.
   const right = translate(
     [width / 2 + borderThickness / 2, 0, 0],
-    cuboid({ size: [borderThickness, length, mainHeight] })
+    cuboid({ size: [borderThickness, length + extra, mainHeight] })
   );
 
-  // Left border (runs along the left edge)
+  // Left border: similar to the right border but at the left.
   const left = translate(
     [- (width / 2 + borderThickness / 2), 0, 0],
-    cuboid({ size: [borderThickness, length, mainHeight] })
+    cuboid({ size: [borderThickness, length + extra, mainHeight] })
   );
 
-  // Return all parts as an array (the STL serializer will combine them)
-  return [main, top, bottom, right, left];
+  // Only the border pieces are returned (no internal cuboid)
+  return [top, bottom, right, left];
 }
+
