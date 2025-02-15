@@ -122,7 +122,7 @@ export default {
       // Create Scene & Camera
       this.scene = new THREE.Scene();
       this.camera = new THREE.PerspectiveCamera(75, 500 / 500, 0.1, 1000);
-      this.camera.position.set(0, 70, 50);
+      this.camera.position.set(0, 70, 150);
       this.camera.lookAt(0, 0, 0);
 
       // Create Renderer
