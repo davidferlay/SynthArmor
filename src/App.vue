@@ -9,7 +9,7 @@
     </div>
 
     <div class="w-full max-w-[600px] bg-white rounded shadow p-6">
-      <!-- Pass the safety, width, length down to InputForm -->
+      <!-- Pass the safety, width, and length down to InputForm -->
       <InputForm
         :initial-width="width"
         :initial-length="length"
@@ -19,18 +19,23 @@
       <!-- Also pass the safety prop to the ModelViewer -->
       <ModelViewer :width="width" :length="length" :safety="safety" />
     </div>
+
+    <!-- FAQ Section -->
+    <FAQ />
   </div>
 </template>
 
 <script>
 import InputForm from './components/InputForm.vue';
 import ModelViewer from './components/ModelViewer.vue';
+import FAQ from './components/FAQ.vue';
 
 export default {
   name: 'App',
   components: {
     InputForm,
-    ModelViewer
+    ModelViewer,
+    FAQ
   },
   data() {
     return {
