@@ -1,7 +1,6 @@
 <template>
-  <!-- Main container centers everything and adds vertical spacing -->
+  <!-- Main container -->
   <div class="max-w-3xl mx-auto min-h-screen flex flex-col justify-center items-center p-6">
-    <!-- Title and description -->
     <div class="mb-8 text-center">
       <h1 class="text-4xl font-bold mb-2">SynthArmor</h1>
       <p class="text-gray-600">
@@ -9,10 +8,16 @@
       </p>
     </div>
 
-    <!-- White container with fixed max width so that the form and 3D render match in width -->
     <div class="w-full max-w-[600px] bg-white rounded shadow p-6">
-      <InputForm @update-dimensions="updateDimensions" />
-      <ModelViewer :width="width" :length="length" />
+      <!-- Pass the safety, width, length down to InputForm -->
+      <InputForm
+        :initial-width="width"
+        :initial-length="length"
+        :initial-safety="safety"
+        @update-dimensions="updateDimensions"
+      />
+      <!-- Also pass the safety prop to the ModelViewer -->
+      <ModelViewer :width="width" :length="length" :safety="safety" />
     </div>
   </div>
 </template>
@@ -30,19 +35,16 @@ export default {
   data() {
     return {
       width: 155,
-      length: 105
+      length: 105,
+      safety: 0  // Default safety offset = 0
     };
   },
   methods: {
-    updateDimensions(dimensions) {
-      this.width = dimensions.width;
-      this.length = dimensions.length;
+    updateDimensions({ width, length, safety }) {
+      this.width = width;
+      this.length = length;
+      this.safety = safety;
     }
   }
 };
 </script>
-
-<style scoped>
-/* Optional: any scoped CSS if you want to tweak further */
-</style>
-
