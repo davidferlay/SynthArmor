@@ -13,7 +13,7 @@
 <script>
 import * as THREE from 'three';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js';
 import { createGeometry } from '../jscad/geometry.js';
 import { serialize } from '@jscad/stl-serializer';
 
@@ -160,19 +160,28 @@ export default {
       directionalLight.position.set(1, 1, 1).normalize();
       this.scene.add(directionalLight);
 
-      // OrbitControls
-      this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-      this.controls.enableDamping = true;
-      this.controls.dampingFactor = 0.05;
-      this.controls.screenSpacePanning = true;
-      this.controls.minDistance = 50;
-      this.controls.maxDistance = 1000;
+      // Use TrackballControls with inertia enabled:
+      this.controls = new TrackballControls(this.camera, this.renderer.domElement);
+      this.controls.rotateSpeed = 1.0;
+      this.controls.zoomSpeed = 1.2;
+      this.controls.panSpeed = 0.8;
+      this.controls.noZoom = false;
+      this.controls.noPan = false;
+      // Set staticMoving to false to allow inertia/momentum on release
+      this.controls.staticMoving = false;
+      this.controls.dynamicDampingFactor = 0.05;
+
+      /*this.controls.enableDamping = true;*/
+      /*this.controls.dampingFactor = 0.05;*/
+      /*this.controls.screenSpacePanning = true;*/
+      /*this.controls.minDistance = 50;*/
+      /*this.controls.maxDistance = 1000;*/
 
       this.animate();
     },
     animate() {
       requestAnimationFrame(this.animate);
-      this.controls.update();
+      if (this.controls) this.controls.update();
       this.renderer.render(this.scene, this.camera);
     },
     downloadSTL() {
