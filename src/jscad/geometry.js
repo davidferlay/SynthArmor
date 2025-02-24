@@ -2,7 +2,7 @@
 import { cuboid } from '@jscad/modeling/src/primitives/index.js';
 import { translate } from '@jscad/modeling/src/operations/transforms/translate.js';
 
-export function createGeometry({ width, length, safety = 0 }) {
+export function createGeometry({ width, length, safety = 0, topDepth = 25 }) {
   const mainHeight = 10;       // Height of the border pieces
   const borderThickness = 2.5; // Thickness of the borders
   const extra = 5;             // Extra added to the border's primary dimension
@@ -35,6 +35,13 @@ export function createGeometry({ width, length, safety = 0 }) {
     cuboid({ size: [borderThickness, effectiveLength + extra, mainHeight] })
   );
 
-  // Return the array of geometry pieces
-  return [top, bottom, right, left];
+  // Inner rectangle positioned topDepth above the top of the border pieces
+  const innerHeight = 2; // Shallow height for the inner piece
+  const inner = translate(
+    [0, 0, mainHeight + topDepth],
+    cuboid({ size: [effectiveWidth, effectiveLength, innerHeight] })
+  );
+
+  return [top, bottom, right, left, inner];
 }
+

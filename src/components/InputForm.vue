@@ -28,11 +28,8 @@
 
     <!-- Safety offset slider -->
     <div class="flex-1 mb-4 sm:mb-0">
-      <label class="block text-sm font-medium text-gray-700">
-        Safety Offset (mm):
-      </label>
+      <label class="block text-sm font-medium text-gray-700">Safety Offset (mm):</label>
       <div class="flex items-center space-x-2 mt-1">
-        <!-- Slider -->
         <input
           type="range"
           v-model.number="localSafety"
@@ -41,13 +38,35 @@
           step="0.1"
           class="w-full"
         />
-        <!-- Numeric readout -->
         <input
           type="number"
           v-model.number="localSafety"
           min="-2"
           max="2"
           step="0.1"
+          class="p-2 border border-gray-300 rounded-md w-16"
+        />
+      </div>
+    </div>
+
+    <!-- Top Depth slider -->
+    <div class="flex-1 mb-4 sm:mb-0">
+      <label class="block text-sm font-medium text-gray-700">Top Depth (mm):</label>
+      <div class="flex items-center space-x-2 mt-1">
+        <input
+          type="range"
+          v-model.number="localTopDepth"
+          min="0"
+          max="50"
+          step="1"
+          class="w-full"
+        />
+        <input
+          type="number"
+          v-model.number="localTopDepth"
+          min="0"
+          max="50"
+          step="1"
           class="p-2 border border-gray-300 rounded-md w-16"
         />
       </div>
@@ -80,13 +99,18 @@ export default {
     initialSafety: {
       type: Number,
       default: 0
+    },
+    initialTopDepth: {
+      type: Number,
+      default: 25
     }
   },
   data() {
     return {
       localWidth: this.initialWidth,
       localLength: this.initialLength,
-      localSafety: this.initialSafety
+      localSafety: this.initialSafety,
+      localTopDepth: this.initialTopDepth
     };
   },
   methods: {
@@ -94,7 +118,8 @@ export default {
       this.$emit('update-dimensions', {
         width: this.localWidth,
         length: this.localLength,
-        safety: this.localSafety
+        safety: this.localSafety,
+        topDepth: this.localTopDepth
       });
     }
   }
