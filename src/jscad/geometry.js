@@ -5,7 +5,9 @@ import { translate } from '@jscad/modeling/src/operations/transforms/translate.j
 export function createGeometry({ width, length, safety = 0 }) {
   const mainHeight = 10;       // Height of the border pieces
   const borderThickness = 2.5; // Thickness of the borders
-  const extra = 5;             // Extra added to the border's primary dimension
+  // cornerOverlap is computed as twice the borderThickness.
+  // Its purpose is to ensure a seamless overlap at the corners/edges of the borders.
+  const cornerOverlap = borderThickness * 2;
 
   // Compute effective dimensions based on user input and safety offset.
   const effectiveWidth = width + safety;
@@ -14,19 +16,19 @@ export function createGeometry({ width, length, safety = 0 }) {
   // --- Borders for the bottom inner cuboid (implicit inner cuboid) ---
   const bottomFrontBorder = translate(
     [0, effectiveLength / 2 + borderThickness / 2, 0],
-    cuboid({ size: [effectiveWidth + extra, borderThickness, mainHeight] })
+    cuboid({ size: [effectiveWidth + cornerOverlap, borderThickness, mainHeight] })
   );
   const bottomBackBorder = translate(
     [0, -effectiveLength / 2 - borderThickness / 2, 0],
-    cuboid({ size: [effectiveWidth + extra, borderThickness, mainHeight] })
+    cuboid({ size: [effectiveWidth + cornerOverlap, borderThickness, mainHeight] })
   );
   const bottomRightBorder = translate(
     [effectiveWidth / 2 + borderThickness / 2, 0, 0],
-    cuboid({ size: [borderThickness, effectiveLength + extra, mainHeight] })
+    cuboid({ size: [borderThickness, effectiveLength + cornerOverlap, mainHeight] })
   );
   const bottomLeftBorder = translate(
     [-effectiveWidth / 2 - borderThickness / 2, 0, 0],
-    cuboid({ size: [borderThickness, effectiveLength + extra, mainHeight] })
+    cuboid({ size: [borderThickness, effectiveLength + cornerOverlap, mainHeight] })
   );
 
   // --- Borders for the top inner cuboid (implicit inner cuboid) ---
@@ -36,19 +38,19 @@ export function createGeometry({ width, length, safety = 0 }) {
   // These border pieces are stacked on top of the bottom borders (translated in Z by mainHeight)
   const topInnerFrontBorder = translate(
     [0, topInnerLength / 2 + borderThickness / 2, mainHeight],
-    cuboid({ size: [topInnerWidth + extra, borderThickness, mainHeight] })
+    cuboid({ size: [topInnerWidth + cornerOverlap, borderThickness, mainHeight] })
   );
   const topInnerBackBorder = translate(
     [0, -topInnerLength / 2 - borderThickness / 2, mainHeight],
-    cuboid({ size: [topInnerWidth + extra, borderThickness, mainHeight] })
+    cuboid({ size: [topInnerWidth + cornerOverlap, borderThickness, mainHeight] })
   );
   const topInnerRightBorder = translate(
     [topInnerWidth / 2 + borderThickness / 2, 0, mainHeight],
-    cuboid({ size: [borderThickness, topInnerLength + extra, mainHeight] })
+    cuboid({ size: [borderThickness, topInnerLength + cornerOverlap, mainHeight] })
   );
   const topInnerLeftBorder = translate(
     [-topInnerWidth / 2 - borderThickness / 2, 0, mainHeight],
-    cuboid({ size: [borderThickness, topInnerLength + extra, mainHeight] })
+    cuboid({ size: [borderThickness, topInnerLength + cornerOverlap, mainHeight] })
   );
 
   // Return only the border geometries.
@@ -64,3 +66,4 @@ export function createGeometry({ width, length, safety = 0 }) {
     topInnerLeftBorder
   ];
 }
+
