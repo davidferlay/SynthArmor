@@ -141,9 +141,21 @@ export default {
       const renderWidth = 600;
       const renderHeight = 500;
       this.scene = new THREE.Scene();
+
+      // Create a perspective camera.
       this.camera = new THREE.PerspectiveCamera(75, renderWidth / renderHeight, 0.1, 1000);
-      this.camera.position.set(0, 70, 150);
-      this.camera.lookAt(0, 0, 0);
+
+      // Position the camera so that it sits along the positive Y axis (beyond the front border)
+      // and at an elevation that shows the model’s lower edge (Z=0) at the bottom.
+      // Parameters: 3/4th, distance, from-above axis
+      this.camera.position.set(0, 150, 100);
+
+      // Look at a target that is centered horizontally and near the middle of the model's vertical extent.
+      // Here we use (0, 0, 10) assuming the model’s vertical extent is roughly 0 to 20.
+      this.camera.lookAt(0, 0, 10);
+
+      // Ensure the camera's up vector remains Z-up.
+      this.camera.up.set(0, 0, 1);
 
       this.renderer = new THREE.WebGLRenderer({
         canvas: this.$refs.canvas,
@@ -152,7 +164,7 @@ export default {
       this.renderer.setSize(renderWidth, renderHeight);
       this.renderer.setClearColor(0xf0f0f0);
 
-      // Lighting
+      // Lighting setup
       const ambientLight = new THREE.AmbientLight(0x404040);
       this.scene.add(ambientLight);
 
@@ -160,22 +172,21 @@ export default {
       directionalLight.position.set(1, 1, 1).normalize();
       this.scene.add(directionalLight);
 
-      // Use TrackballControls with inertia enabled:
+      // Use TrackballControls for user interaction.
+      // Here we restrict the polar angle so the user sees the model from the intended perspective.
       this.controls = new TrackballControls(this.camera, this.renderer.domElement);
       this.controls.rotateSpeed = 1.0;
       this.controls.zoomSpeed = 1.2;
       this.controls.panSpeed = 0.8;
       this.controls.noZoom = false;
       this.controls.noPan = false;
-      // Set staticMoving to false to allow inertia/momentum on release
       this.controls.staticMoving = false;
       this.controls.dynamicDampingFactor = 0.05;
 
-      /*this.controls.enableDamping = true;*/
-      /*this.controls.dampingFactor = 0.05;*/
-      /*this.controls.screenSpacePanning = true;*/
-      /*this.controls.minDistance = 50;*/
-      /*this.controls.maxDistance = 1000;*/
+      // Limit vertical rotation: prevents the view from flipping over
+      // and helps keep the front side facing the user.
+      this.controls.minPolarAngle = Math.PI / 4;
+      this.controls.maxPolarAngle = Math.PI / 2;
 
       this.animate();
     },
