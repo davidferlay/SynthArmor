@@ -1,6 +1,6 @@
 <template>
   <form
-    @submit.prevent="emitValues"
+    @submit.prevent
     class="flex flex-col sm:flex-row sm:space-x-4 items-end"
     style="width: 100%; max-width: 600px; margin: 0 auto; box-sizing: border-box;"
   >
@@ -9,6 +9,9 @@
       <label class="block text-sm font-medium text-gray-700">Width (mm):</label>
       <input
         v-model.number="localWidth"
+        @blur="emitValues"
+        @keyup.enter="emitValues"
+        @change="emitValues"
         type="number"
         placeholder="Enter width"
         class="mt-1 p-2 border border-gray-300 rounded-md w-full"
@@ -20,13 +23,16 @@
       <label class="block text-sm font-medium text-gray-700">Length (mm):</label>
       <input
         v-model.number="localLength"
+        @blur="emitValues"
+        @keyup.enter="emitValues"
+        @change="emitValues"
         type="number"
         placeholder="Enter length"
         class="mt-1 p-2 border border-gray-300 rounded-md w-full"
       />
     </div>
 
-    <!-- Safety offset slider -->
+    <!-- Safety offset slider and numeric readout -->
     <div class="flex-1 mb-4 sm:mb-0">
       <label class="block text-sm font-medium text-gray-700">
         Safety Offset (mm):
@@ -36,6 +42,9 @@
         <input
           type="range"
           v-model.number="localSafety"
+          @blur="emitValues"
+          @keyup.enter="emitValues"
+          @change="emitValues"
           min="-2"
           max="2"
           step="0.1"
@@ -45,22 +54,15 @@
         <input
           type="number"
           v-model.number="localSafety"
+          @blur="emitValues"
+          @keyup.enter="emitValues"
+          @change="emitValues"
           min="-2"
           max="2"
           step="0.1"
           class="p-2 border border-gray-300 rounded-md w-16"
         />
       </div>
-    </div>
-
-    <!-- Submit button -->
-    <div>
-      <button
-        type="submit"
-        class="mt-4 sm:mt-0 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-      >
-        Update
-      </button>
     </div>
   </form>
 </template>
