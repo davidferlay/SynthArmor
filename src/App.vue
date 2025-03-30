@@ -9,13 +9,14 @@
     </div>
 
     <div class="w-full max-w-[600px] bg-white rounded shadow p-6">
-      <!-- Pass dimensions, safety, and new height values to InputForm -->
+      <!-- Pass dimensions, safety, height, and border thickness to InputForm -->
       <InputForm
         :initial-width="width"
         :initial-depth="depth"
         :initial-safety="safety"
         :initial-bottom-height="bottomHeight"
         :initial-top-height="topHeight"
+        :initial-border-thickness="borderThickness"
         @update-dimensions="updateDimensions"
       />
       <!-- Also pass these props to the ModelViewer -->
@@ -25,6 +26,7 @@
         :safety="safety"
         :bottom-height="bottomHeight"
         :top-height="topHeight"
+        :border-thickness="borderThickness"
       />
     </div>
 
@@ -51,16 +53,18 @@ export default {
       depth: 105,
       safety: 0,
       bottomHeight: 15,
-      topHeight: 25
+      topHeight: 25,
+      borderThickness: 2.5
     };
   },
   methods: {
-    updateDimensions({ width, depth, safety, bottomHeight, topHeight }) {
+    updateDimensions({ width, depth, safety, bottomHeight, topHeight, borderThickness }) {
       this.width = width;
       this.depth = depth;
       this.safety = safety;
       this.bottomHeight = bottomHeight;
       this.topHeight = topHeight;
+      this.borderThickness = borderThickness;
     }
   }
 };

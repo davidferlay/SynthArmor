@@ -18,7 +18,7 @@ import { createGeometry } from '../jscad/geometry.js';
 import { serialize } from '@jscad/stl-serializer';
 
 export default {
-  props: ['width', 'depth', 'safety', 'bottomHeight', 'topHeight'],
+  props: ['width', 'depth', 'safety', 'bottomHeight', 'topHeight', 'borderThickness'],
   data() {
     return {
       stlData: null,
@@ -27,6 +27,7 @@ export default {
       currentSafety: 0,
       currentBottomHeight: 0,
       currentTopHeight: 0,
+      currentBorderThickness: 0,
       tweenDuration: 1000 // ms
     };
   },
@@ -37,7 +38,8 @@ export default {
         depth: this.depth,
         safety: this.safety,
         bottomHeight: this.bottomHeight,
-        topHeight: this.topHeight
+        topHeight: this.topHeight,
+        borderThickness: this.borderThickness
       };
     }
   },
@@ -51,7 +53,8 @@ export default {
             oldVal.depth === newVal.depth &&
             oldVal.safety === newVal.safety &&
             oldVal.bottomHeight === newVal.bottomHeight &&
-            oldVal.topHeight === newVal.topHeight
+            oldVal.topHeight === newVal.topHeight &&
+            oldVal.borderThickness === newVal.borderThickness
           )
         ) {
           return;
@@ -62,7 +65,8 @@ export default {
             depth: this.currentDepth,
             safety: this.currentSafety,
             bottomHeight: this.currentBottomHeight,
-            topHeight: this.currentTopHeight
+            topHeight: this.currentTopHeight,
+            borderThickness: this.currentBorderThickness
           },
           newVal
         );
@@ -84,14 +88,15 @@ export default {
     this.currentSafety = this.safety;
     this.currentBottomHeight = this.bottomHeight;
     this.currentTopHeight = this.topHeight;
+    this.currentBorderThickness = this.borderThickness;
 
     this.initScene();
     this.createInitialMesh();
   },
   methods: {
-    generateSTL(width, depth, safety, bottomHeight, topHeight) {
+    generateSTL(width, depth, safety, bottomHeight, topHeight, borderThickness) {
       try {
-        const geometryArray = createGeometry({ width, depth, safety, bottomHeight, topHeight });
+        const geometryArray = createGeometry({ width, depth, safety, bottomHeight, topHeight, borderThickness });
         const stlDataArray = serialize({ binary: false }, geometryArray);
         return stlDataArray.join('\n');
       } catch (err) {
@@ -100,7 +105,7 @@ export default {
       }
     },
     createInitialMesh() {
-      const stlString = this.generateSTL(this.width, this.depth, this.safety, this.bottomHeight, this.topHeight);
+      const stlString = this.generateSTL(this.width, this.depth, this.safety, this.bottomHeight, this.topHeight, this.borderThickness);
       if (!stlString) return;
       this.stlData = stlString;
       const loader = new STLLoader();
@@ -123,8 +128,9 @@ export default {
         const interpSafety = oldDims.safety + (newDims.safety - oldDims.safety) * t;
         const interpBottomHeight = oldDims.bottomHeight + (newDims.bottomHeight - oldDims.bottomHeight) * t;
         const interpTopHeight = oldDims.topHeight + (newDims.topHeight - oldDims.topHeight) * t;
+        const interpBorderThickness = oldDims.borderThickness + (newDims.borderThickness - oldDims.borderThickness) * t;
 
-        const stlString = this.generateSTL(interpWidth, interpDepth, interpSafety, interpBottomHeight, interpTopHeight);
+        const stlString = this.generateSTL(interpWidth, interpDepth, interpSafety, interpBottomHeight, interpTopHeight, interpBorderThickness);
         if (stlString) {
           const geometry = loader.parse(stlString);
           if (this.mesh) {
@@ -142,6 +148,7 @@ export default {
           this.currentSafety = newDims.safety;
           this.currentBottomHeight = newDims.bottomHeight;
           this.currentTopHeight = newDims.topHeight;
+          this.currentBorderThickness = newDims.borderThickness;
         }
       };
       requestAnimationFrame(animate);
@@ -193,7 +200,7 @@ export default {
       const blob = new Blob([this.stlData], { type: 'application/octet-stream' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = `SynthArmor_cover_${this.width}x${this.depth}_safetyOffset${this.safety}_bottomHeight${this.bottomHeight}_topHeight${this.topHeight}.stl`;
+      link.download = `SynthArmor_cover_${this.width}x${this.depth}_safetyOffset${this.safety}_bottomHeight${this.bottomHeight}_topHeight${this.topHeight}_borderThickness${this.borderThickness}.stl`;
       link.click();
     }
   }

@@ -2,8 +2,7 @@
 import { cuboid } from '@jscad/modeling/src/primitives/index.js';
 import { translate } from '@jscad/modeling/src/operations/transforms/translate.js';
 
-export function createGeometry({ width, depth, safety = 0, bottomHeight = 15, topHeight = 25 }) {
-  const borderThickness = 2.5; // Thickness of the borders (mm)
+export function createGeometry({ width, depth, safety = 0, bottomHeight = 15, topHeight = 25, borderThickness = 2.5 }) {
   // cornerOverlap ensures a seamless overlap at the corners/edges.
   const cornerOverlap = borderThickness * 2;
 

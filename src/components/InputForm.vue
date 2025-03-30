@@ -5,7 +5,7 @@
     style="width: 100%; max-width: 600px; margin: 0 auto; box-sizing: border-box;"
   >
     <!-- Width input -->
-    <div class="flex-1 mb-4 sm:mb-0">
+    <div class="flex-1 mb-4">
       <label class="block text-sm font-medium text-gray-700">Width (mm):</label>
       <input
         v-model.number="localWidth"
@@ -19,7 +19,7 @@
     </div>
 
     <!-- Depth input -->
-    <div class="flex-1 mb-4 sm:mb-0">
+    <div class="flex-1 mb-4">
       <label class="block text-sm font-medium text-gray-700">Depth (mm):</label>
       <input
         v-model.number="localDepth"
@@ -33,12 +33,9 @@
     </div>
 
     <!-- Safety offset slider and numeric readout -->
-    <div class="flex-1 mb-4 sm:mb-0">
-      <label class="block text-sm font-medium text-gray-700">
-        Safety Offset (mm):
-      </label>
+    <div class="flex-1 mb-4">
+      <label class="block text-sm font-medium text-gray-700">Safety Offset (mm):</label>
       <div class="flex items-center space-x-2 mt-1">
-        <!-- Slider -->
         <input
           type="range"
           v-model.number="localSafety"
@@ -50,7 +47,6 @@
           step="0.1"
           class="w-full"
         />
-        <!-- Numeric readout -->
         <input
           type="number"
           v-model.number="localSafety"
@@ -66,7 +62,7 @@
     </div>
 
     <!-- Bottom Height input -->
-    <div class="flex-1 mb-4 sm:mb-0">
+    <div class="flex-1 mb-4">
       <label class="block text-sm font-medium text-gray-700">Bottom Height (mm):</label>
       <input
         v-model.number="localBottomHeight"
@@ -80,7 +76,7 @@
     </div>
 
     <!-- Top Height input -->
-    <div class="flex-1 mb-4 sm:mb-0">
+    <div class="flex-1 mb-4">
       <label class="block text-sm font-medium text-gray-700">Top Height (mm):</label>
       <input
         v-model.number="localTopHeight"
@@ -92,6 +88,20 @@
         class="mt-1 p-2 border border-gray-300 rounded-md w-full"
       />
     </div>
+
+    <!-- Border Thickness input -->
+    <div class="flex-1 mb-4">
+      <label class="block text-sm font-medium text-gray-700">Border Thickness (mm):</label>
+      <input
+        v-model.number="localBorderThickness"
+        @blur="emitValues"
+        @keyup.enter="emitValues"
+        @change="emitValues"
+        type="number"
+        placeholder="Enter border thickness"
+        class="mt-1 p-2 border border-gray-300 rounded-md w-full"
+      />
+    </div>
   </form>
 </template>
 
@@ -99,26 +109,12 @@
 export default {
   name: 'InputForm',
   props: {
-    initialWidth: {
-      type: Number,
-      default: 155
-    },
-    initialDepth: {
-      type: Number,
-      default: 105
-    },
-    initialSafety: {
-      type: Number,
-      default: 0
-    },
-    initialBottomHeight: {
-      type: Number,
-      default: 15
-    },
-    initialTopHeight: {
-      type: Number,
-      default: 25
-    }
+    initialWidth: { type: Number, default: 155 },
+    initialDepth: { type: Number, default: 105 },
+    initialSafety: { type: Number, default: 0 },
+    initialBottomHeight: { type: Number, default: 15 },
+    initialTopHeight: { type: Number, default: 25 },
+    initialBorderThickness: { type: Number, default: 2.5 }
   },
   data() {
     return {
@@ -126,7 +122,8 @@ export default {
       localDepth: this.initialDepth,
       localSafety: this.initialSafety,
       localBottomHeight: this.initialBottomHeight,
-      localTopHeight: this.initialTopHeight
+      localTopHeight: this.initialTopHeight,
+      localBorderThickness: this.initialBorderThickness
     };
   },
   methods: {
@@ -136,7 +133,8 @@ export default {
         depth: this.localDepth,
         safety: this.localSafety,
         bottomHeight: this.localBottomHeight,
-        topHeight: this.localTopHeight
+        topHeight: this.localTopHeight,
+        borderThickness: this.localBorderThickness
       });
     }
   }
