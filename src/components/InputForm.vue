@@ -18,16 +18,16 @@
       />
     </div>
 
-    <!-- Length input -->
+    <!-- Depth input -->
     <div class="flex-1 mb-4 sm:mb-0">
-      <label class="block text-sm font-medium text-gray-700">Length (mm):</label>
+      <label class="block text-sm font-medium text-gray-700">Depth (mm):</label>
       <input
-        v-model.number="localLength"
+        v-model.number="localDepth"
         @blur="emitValues"
         @keyup.enter="emitValues"
         @change="emitValues"
         type="number"
-        placeholder="Enter length"
+        placeholder="Enter depth"
         class="mt-1 p-2 border border-gray-300 rounded-md w-full"
       />
     </div>
@@ -75,7 +75,7 @@ export default {
       type: Number,
       default: 155
     },
-    initialLength: {
+    initialDepth: {
       type: Number,
       default: 105
     },
@@ -87,7 +87,7 @@ export default {
   data() {
     return {
       localWidth: this.initialWidth,
-      localLength: this.initialLength,
+      localDepth: this.initialDepth,
       localSafety: this.initialSafety
     };
   },
@@ -95,7 +95,7 @@ export default {
     emitValues() {
       this.$emit('update-dimensions', {
         width: this.localWidth,
-        length: this.localLength,
+        depth: this.localDepth,
         safety: this.localSafety
       });
     }

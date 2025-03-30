@@ -9,15 +9,15 @@
     </div>
 
     <div class="w-full max-w-[600px] bg-white rounded shadow p-6">
-      <!-- Pass the safety, width, and length down to InputForm -->
+      <!-- Pass the safety, width, and depth down to InputForm -->
       <InputForm
         :initial-width="width"
-        :initial-length="length"
+        :initial-depth="depth"
         :initial-safety="safety"
         @update-dimensions="updateDimensions"
       />
       <!-- Also pass the safety prop to the ModelViewer -->
-      <ModelViewer :width="width" :length="length" :safety="safety" />
+      <ModelViewer :width="width" :depth="depth" :safety="safety" />
     </div>
 
     <!-- FAQ Section -->
@@ -40,16 +40,17 @@ export default {
   data() {
     return {
       width: 155,
-      length: 105,
+      depth: 105,
       safety: 0  // Default safety offset = 0
     };
   },
   methods: {
-    updateDimensions({ width, length, safety }) {
+    updateDimensions({ width, depth, safety }) {
       this.width = width;
-      this.length = length;
+      this.depth = depth;
       this.safety = safety;
     }
   }
 };
 </script>
+

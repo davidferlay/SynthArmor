@@ -18,13 +18,13 @@ import { createGeometry } from '../jscad/geometry.js';
 import { serialize } from '@jscad/stl-serializer';
 
 export default {
-  props: ['width', 'length', 'safety'],
+  props: ['width', 'depth', 'safety'],
   data() {
     return {
       stlData: null,
       // Track current dimensions so we can interpolate
       currentWidth: 0,
-      currentLength: 0,
+      currentDepth: 0,
       currentSafety: 0,
       tweenDuration: 1000 // ms
     };
@@ -33,7 +33,7 @@ export default {
     targetDimensions() {
       return {
         width: this.width,
-        length: this.length,
+        depth: this.depth,
         safety: this.safety
       };
     }
@@ -46,7 +46,7 @@ export default {
           !oldVal ||
           (
             oldVal.width === newVal.width &&
-            oldVal.length === newVal.length &&
+            oldVal.depth === newVal.depth &&
             oldVal.safety === newVal.safety
           )
         ) {
@@ -56,7 +56,7 @@ export default {
         this.animateDimensionsTransition(
           {
             width: this.currentWidth,
-            length: this.currentLength,
+            depth: this.currentDepth,
             safety: this.currentSafety
           },
           newVal
@@ -75,16 +75,16 @@ export default {
   mounted() {
     // Initialize current dimension trackers
     this.currentWidth = this.width;
-    this.currentLength = this.length;
+    this.currentDepth = this.depth;
     this.currentSafety = this.safety;
 
     this.initScene();
     this.createInitialMesh();
   },
   methods: {
-    generateSTL(width, length, safety) {
+    generateSTL(width, depth, safety) {
       try {
-        const geometryArray = createGeometry({ width, length, safety });
+        const geometryArray = createGeometry({ width, depth, safety });
         const stlDataArray = serialize({ binary: false }, geometryArray);
         return stlDataArray.join('\n');
       } catch (err) {
@@ -93,7 +93,7 @@ export default {
       }
     },
     createInitialMesh() {
-      const stlString = this.generateSTL(this.width, this.length, this.safety);
+      const stlString = this.generateSTL(this.width, this.depth, this.safety);
       if (!stlString) return;
       this.stlData = stlString;
       const loader = new STLLoader();
@@ -112,11 +112,11 @@ export default {
         const t = Math.min(elapsed / duration, 1);
 
         const interpWidth = oldDims.width + (newDims.width - oldDims.width) * t;
-        const interpLength = oldDims.length + (newDims.length - oldDims.length) * t;
+        const interpDepth = oldDims.depth + (newDims.depth - oldDims.depth) * t;
         const interpSafety = oldDims.safety + (newDims.safety - oldDims.safety) * t;
 
         // Generate intermediate geometry
-        const stlString = this.generateSTL(interpWidth, interpLength, interpSafety);
+        const stlString = this.generateSTL(interpWidth, interpDepth, interpSafety);
         if (stlString) {
           const geometry = loader.parse(stlString);
           if (this.mesh) {
@@ -131,7 +131,7 @@ export default {
         } else {
           // At the end, update our trackers
           this.currentWidth = newDims.width;
-          this.currentLength = newDims.length;
+          this.currentDepth = newDims.depth;
           this.currentSafety = newDims.safety;
         }
       };
@@ -200,7 +200,7 @@ export default {
       const blob = new Blob([this.stlData], { type: 'application/octet-stream' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = `SynthArmor_cover_${this.width}x${this.length}_safety${this.safety}.stl`;
+      link.download = `SynthArmor_cover_${this.width}x${this.depth}_safety${this.safety}.stl`;
       link.click();
     }
   }
