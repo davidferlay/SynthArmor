@@ -23,7 +23,7 @@
       </button>
       <transition name="faq-collapse">
         <div v-show="faq.open" class="px-6 py-4 bg-gray-50">
-          <!-- Render answer as HTML to support bullet lists -->
+          <!-- Render answer as HTML to support lists and formatting -->
           <div v-html="faq.answer" class="text-gray-600"></div>
         </div>
       </transition>
@@ -38,19 +38,26 @@ export default {
     return {
       faqs: [
         {
-          question: "What is this ?",
+          question: "What is this?",
           answer:
-            "This app is designed to help you generate 3D model of a cover protection for all your gear, musical and otherwise. The resulting STL file can be downloaded and 3D printed.",
+            "This web app lets you quickly generate a custom 3D model for gear cover protection. Simply enter your equipment’s dimensions, adjust a safety offset if needed, and download an STL file ready for 3D printing.",
           open: false
         },
         {
-          question: "How does it work ?",
-          answer:
-            `Update the dimensions of the cover to your needs:
-            <ul class="list-disc pl-6 mt-2">
-              <li>Input the precise dimensions of the machine you want the cover to be for</li>
-              <li>Optionally, fine adjust dimensions using the Safety Offset field. This value will be added to both width and depth.</li>
-            </ul>`,
+          question: "How does it work?",
+          answer: `
+            <ol class="list-decimal pl-6 mt-2">
+              <li><strong>Enter Dimensions:</strong> Provide the exact width and depth of your machine.</li>
+              <li><strong>Adjust for Fit:</strong> Use the "Safety Offset" to add a small buffer for a secure fit.</li>
+              <li><strong>Automatic Preview:</strong> The model updates automatically as you modify the values.</li>
+              <li><strong>Download STL:</strong> Click the download button to save your custom design for 3D printing.</li>
+            </ol>
+          `,
+          open: false
+        },
+        {
+          question: "A Word of Caution",
+          answer: "Please note that you are solely responsible for ensuring that the generated model fits your machine. Always double-check the dimensions before printing.",
           open: false
         }
       ]
@@ -82,4 +89,3 @@ export default {
   opacity: 1;
 }
 </style>
-
