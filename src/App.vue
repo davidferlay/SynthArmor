@@ -12,17 +12,14 @@
     </div>
 
     <div class="w-full max-w-[600px] bg-white rounded shadow p-6">
-      <!-- Pass dimensions, safety, heights, and border thickness to InputForm -->
-      <InputForm
+      <!-- Basic form fields above the 3D preview -->
+      <BasicForm
         :initial-width="width"
         :initial-depth="depth"
         :initial-safety="safety"
-        :initial-bottom-height="bottomHeight"
-        :initial-top-height="topHeight"
-        :initial-border-thickness="borderThickness"
-        @update-dimensions="updateDimensions"
+        @update-dimensions="updateBasic"
       />
-      <!-- Also pass these props to the ModelViewer -->
+      <!-- 3D Preview -->
       <ModelViewer
         :width="width"
         :depth="depth"
@@ -30,6 +27,13 @@
         :bottom-height="bottomHeight"
         :top-height="topHeight"
         :border-thickness="borderThickness"
+      />
+      <!-- Advanced form fields below the 3D preview -->
+      <AdvancedForm
+        :initial-bottom-height="bottomHeight"
+        :initial-top-height="topHeight"
+        :initial-border-thickness="borderThickness"
+        @update-advanced="updateAdvanced"
       />
     </div>
 
@@ -39,14 +43,16 @@
 </template>
 
 <script>
-import InputForm from './components/InputForm.vue';
+import BasicForm from './components/BasicForm.vue';
+import AdvancedForm from './components/AdvancedForm.vue';
 import ModelViewer from './components/ModelViewer.vue';
 import FAQ from './components/FAQ.vue';
 
 export default {
   name: 'App',
   components: {
-    InputForm,
+    BasicForm,
+    AdvancedForm,
     ModelViewer,
     FAQ
   },
@@ -61,10 +67,12 @@ export default {
     };
   },
   methods: {
-    updateDimensions({ width, depth, safety, bottomHeight, topHeight, borderThickness }) {
+    updateBasic({ width, depth, safety }) {
       this.width = width;
       this.depth = depth;
       this.safety = safety;
+    },
+    updateAdvanced({ bottomHeight, topHeight, borderThickness }) {
       this.bottomHeight = bottomHeight;
       this.topHeight = topHeight;
       this.borderThickness = borderThickness;
@@ -72,4 +80,5 @@ export default {
   }
 };
 </script>
+
 
