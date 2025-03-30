@@ -1,3 +1,4 @@
 .git
 codebase.md
 node_modules
+dist

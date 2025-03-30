@@ -12,11 +12,11 @@ export function createGeometry({ width, length, safety = 0 }) {
   const effectiveLength = length + safety;
 
   // --- Borders for the bottom inner cuboid (implicit inner cuboid) ---
-  const bottomTopBorder = translate(
+  const bottomFrontBorder = translate(
     [0, effectiveLength / 2 + borderThickness / 2, 0],
     cuboid({ size: [effectiveWidth + extra, borderThickness, mainHeight] })
   );
-  const bottomBottomBorder = translate(
+  const bottomBackBorder = translate(
     [0, -effectiveLength / 2 - borderThickness / 2, 0],
     cuboid({ size: [effectiveWidth + extra, borderThickness, mainHeight] })
   );
@@ -34,11 +34,11 @@ export function createGeometry({ width, length, safety = 0 }) {
   const topInnerWidth = effectiveWidth - borderThickness / 2;
   const topInnerLength = effectiveLength - borderThickness / 2;
   // These border pieces are stacked on top of the bottom borders (translated in Z by mainHeight)
-  const topInnerTopBorder = translate(
+  const topInnerFrontBorder = translate(
     [0, topInnerLength / 2 + borderThickness / 2, mainHeight],
     cuboid({ size: [topInnerWidth + extra, borderThickness, mainHeight] })
   );
-  const topInnerBottomBorder = translate(
+  const topInnerBackBorder = translate(
     [0, -topInnerLength / 2 - borderThickness / 2, mainHeight],
     cuboid({ size: [topInnerWidth + extra, borderThickness, mainHeight] })
   );
@@ -54,14 +54,13 @@ export function createGeometry({ width, length, safety = 0 }) {
   // Return only the border geometries.
   // The inner cuboids themselves are implicit and are not rendered.
   return [
-    bottomTopBorder,
-    bottomBottomBorder,
+    bottomFrontBorder,
+    bottomBackBorder,
     bottomRightBorder,
     bottomLeftBorder,
-    topInnerTopBorder,
-    topInnerBottomBorder,
+    topInnerFrontBorder,
+    topInnerBackBorder,
     topInnerRightBorder,
     topInnerLeftBorder
   ];
 }
-
