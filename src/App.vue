@@ -1,15 +1,18 @@
 <template>
   <!-- Main container -->
   <div class="max-w-3xl mx-auto min-h-screen flex flex-col justify-center items-center p-6">
+    <!-- Logo -->
+    <img src="/SynthArmor logo.png" alt="SynthArmor Logo" class="w-32 mb-4" />
+
     <div class="mb-8 text-center">
-      <h1 class="text-4xl font-bold mb-2">SynthArmor</h1>
+      <!-- <h1 class="text-4xl font-bold mb-2">SynthArmor</h1> -->
       <p class="text-gray-600">
         Modify the dimensions of a 3D model and download your custom design instantly.
       </p>
     </div>
 
     <div class="w-full max-w-[600px] bg-white rounded shadow p-6">
-      <!-- Pass dimensions, safety, height, and border thickness to InputForm -->
+      <!-- Pass dimensions, safety, heights, and border thickness to InputForm -->
       <InputForm
         :initial-width="width"
         :initial-depth="depth"
