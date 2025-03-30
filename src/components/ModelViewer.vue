@@ -1,12 +1,6 @@
 <template>
   <div class="mt-6 flex flex-col items-center">
     <canvas ref="canvas" class="border border-gray-300 rounded-md w-full max-w-[600px]"></canvas>
-    <button
-      @click="downloadSTL"
-      class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-    >
-      Download STL
-    </button>
   </div>
 </template>
 

@@ -19,8 +19,9 @@
         :initial-safety="safety"
         @update-dimensions="updateBasic"
       />
-      <!-- 3D Preview -->
+      <!-- 3D Preview with ref -->
       <ModelViewer
+        ref="modelViewer"
         :width="width"
         :depth="depth"
         :safety="safety"
@@ -35,6 +36,13 @@
         :initial-border-thickness="borderThickness"
         @update-advanced="updateAdvanced"
       />
+	<!-- Download Button -->
+	<button
+	  @click="downloadModel"
+	  class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 block mx-auto"
+	>
+	  Download file
+	</button>
     </div>
 
     <!-- FAQ Section -->
@@ -76,9 +84,12 @@ export default {
       this.bottomHeight = bottomHeight;
       this.topHeight = topHeight;
       this.borderThickness = borderThickness;
+    },
+    downloadModel() {
+      // Call the download function on the ModelViewer component via its ref
+      this.$refs.modelViewer.downloadSTL();
     }
   }
 };
 </script>
-
 
