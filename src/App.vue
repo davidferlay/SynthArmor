@@ -2,7 +2,7 @@
   <!-- Main container -->
   <div class="max-w-3xl mx-auto min-h-screen flex flex-col justify-center items-center p-6">
     <!-- Logo -->
-    <img src="/SynthArmor logo.png" alt="SynthArmor Logo" class="w-32 mb-4" />
+    <img src="/SynthArmor_logo.png" alt="SynthArmor Logo" class="w-40 mb-4" />
 
     <div class="mb-8 text-center">
       <!-- <h1 class="text-4xl font-bold mb-2">SynthArmor</h1> -->
@@ -36,13 +36,13 @@
         :initial-border-thickness="borderThickness"
         @update-advanced="updateAdvanced"
       />
-	<!-- Download Button -->
-	<button
-	  @click="downloadModel"
-	  class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 block mx-auto"
-	>
-	  Download file
-	</button>
+      <!-- Download Button -->
+      <button
+        @click="downloadModel"
+        class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 block mx-auto"
+      >
+        Download file
+      </button>
     </div>
 
     <!-- FAQ Section -->
