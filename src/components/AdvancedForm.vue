@@ -2,7 +2,7 @@
   <form
     @submit.prevent
     class="flex flex-col sm:flex-row sm:flex-wrap sm:space-x-4 items-end mt-4"
-    style="width: 100%; max-width: 600px; margin: 0 auto; box-sizing: border-box;"
+    style="width: 100%; max-width: 600px; margin: 20px auto 0; box-sizing: border-box;"
   >
     <!-- Bottom Height input -->
     <div class="flex-1 mb-4">

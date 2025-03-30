@@ -1,6 +1,13 @@
 <template>
-  <div class="mt-6 flex flex-col items-center">
-    <canvas ref="canvas" class="border border-gray-300 rounded-md w-full max-w-[600px]"></canvas>
+  <div class="mt-2 mb-2 flex flex-col items-center">
+    <div class="w-full max-w-[600px] flex flex-col items-center">
+      <!-- Top reduced border -->
+      <div class="bg-gray-300 h-[1px] w-[95%]"></div>
+      <!-- 3D preview canvas (without top/bottom borders) -->
+      <canvas ref="canvas" class="rounded-md w-full max-w-[600px] border border-gray-300 border-t-0 border-b-0"></canvas>
+      <!-- Bottom reduced border -->
+      <div class="bg-gray-300 h-[1px] w-[95%]"></div>
+    </div>
   </div>
 </template>
 
