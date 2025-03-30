@@ -11,9 +11,8 @@ export function createGeometry({ width, depth, safety = 0, bottomHeight = 15, to
   const effectiveDepth = depth + safety;
 
   // --- Bottom inner cuboid borders ---
-  // The bottom cuboid is "anchored" at its top face at z = 0 and grows downward.
-  // For a cuboid with height = bottomHeight that is centered at the origin,
-  // its top face is at bottomHeight/2. To fix the top face at z = 0, we translate it downward by bottomHeight/2.
+  // The bottom cuboid is anchored at its top face (z = 0) and grows downward.
+  // To fix its top face at z = 0, we translate it downward by bottomHeight/2.
   const bottomZ = -bottomHeight / 2;
   const bottomFrontBorder = translate(
     [0, effectiveDepth / 2 + borderThickness / 2, bottomZ],
@@ -33,10 +32,10 @@ export function createGeometry({ width, depth, safety = 0, bottomHeight = 15, to
   );
 
   // --- Top inner cuboid borders ---
-  // The top cuboid is anchored at its bottom face at z = 0 and grows upward.
-  // For a cuboid with height = topHeight that is centered at the origin,
-  // its bottom face is at -topHeight/2. To fix the bottom face at z = 0, we translate it upward by topHeight/2.
+  // The top cuboid is anchored at its bottom face (z = 0) and grows upward.
+  // To fix its bottom face at z = 0, we translate it upward by topHeight/2.
   const topZ = topHeight / 2;
+  // The top inner cuboid dimensions are slightly reduced:
   const topInnerWidth = effectiveWidth - borderThickness / 2;
   const topInnerDepth = effectiveDepth - borderThickness / 2;
   const topInnerFrontBorder = translate(
@@ -56,6 +55,17 @@ export function createGeometry({ width, depth, safety = 0, bottomHeight = 15, to
     cuboid({ size: [borderThickness, topInnerDepth + cornerOverlap, topHeight] })
   );
 
+  // --- Above Face ---
+  // This new element is placed exactly above the top inner cuboid.
+  // Its bottom face touches the top face of the top inner cuboid borders (which is at z = topHeight).
+  // Since the cuboid is centered by default, we translate it upward by (topHeight + borderThickness/2)
+  // so that its bottom face is exactly at z = topHeight.
+  const aboveFaceZ = topHeight + borderThickness / 2;
+  const aboveFace = translate(
+    [0, 0, aboveFaceZ],
+    cuboid({ size: [topInnerWidth + cornerOverlap, topInnerDepth + cornerOverlap, borderThickness] })
+  );
+
   return [
     bottomFrontBorder,
     bottomBackBorder,
@@ -64,7 +74,8 @@ export function createGeometry({ width, depth, safety = 0, bottomHeight = 15, to
     topInnerFrontBorder,
     topInnerBackBorder,
     topInnerRightBorder,
-    topInnerLeftBorder
+    topInnerLeftBorder,
+    aboveFace
   ];
 }
 
