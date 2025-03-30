@@ -18,14 +18,15 @@ import { createGeometry } from '../jscad/geometry.js';
 import { serialize } from '@jscad/stl-serializer';
 
 export default {
-  props: ['width', 'depth', 'safety'],
+  props: ['width', 'depth', 'safety', 'bottomHeight', 'topHeight'],
   data() {
     return {
       stlData: null,
-      // Track current dimensions so we can interpolate
       currentWidth: 0,
       currentDepth: 0,
       currentSafety: 0,
+      currentBottomHeight: 0,
+      currentTopHeight: 0,
       tweenDuration: 1000 // ms
     };
   },
@@ -34,30 +35,34 @@ export default {
       return {
         width: this.width,
         depth: this.depth,
-        safety: this.safety
+        safety: this.safety,
+        bottomHeight: this.bottomHeight,
+        topHeight: this.topHeight
       };
     }
   },
   watch: {
     targetDimensions: {
       handler(newVal, oldVal) {
-        // Skip if there's no change or if it's the initial run
         if (
           !oldVal ||
           (
             oldVal.width === newVal.width &&
             oldVal.depth === newVal.depth &&
-            oldVal.safety === newVal.safety
+            oldVal.safety === newVal.safety &&
+            oldVal.bottomHeight === newVal.bottomHeight &&
+            oldVal.topHeight === newVal.topHeight
           )
         ) {
           return;
         }
-        // Animate the transition
         this.animateDimensionsTransition(
           {
             width: this.currentWidth,
             depth: this.currentDepth,
-            safety: this.currentSafety
+            safety: this.currentSafety,
+            bottomHeight: this.currentBottomHeight,
+            topHeight: this.currentTopHeight
           },
           newVal
         );
@@ -77,14 +82,16 @@ export default {
     this.currentWidth = this.width;
     this.currentDepth = this.depth;
     this.currentSafety = this.safety;
+    this.currentBottomHeight = this.bottomHeight;
+    this.currentTopHeight = this.topHeight;
 
     this.initScene();
     this.createInitialMesh();
   },
   methods: {
-    generateSTL(width, depth, safety) {
+    generateSTL(width, depth, safety, bottomHeight, topHeight) {
       try {
-        const geometryArray = createGeometry({ width, depth, safety });
+        const geometryArray = createGeometry({ width, depth, safety, bottomHeight, topHeight });
         const stlDataArray = serialize({ binary: false }, geometryArray);
         return stlDataArray.join('\n');
       } catch (err) {
@@ -93,7 +100,7 @@ export default {
       }
     },
     createInitialMesh() {
-      const stlString = this.generateSTL(this.width, this.depth, this.safety);
+      const stlString = this.generateSTL(this.width, this.depth, this.safety, this.bottomHeight, this.topHeight);
       if (!stlString) return;
       this.stlData = stlString;
       const loader = new STLLoader();
@@ -114,9 +121,10 @@ export default {
         const interpWidth = oldDims.width + (newDims.width - oldDims.width) * t;
         const interpDepth = oldDims.depth + (newDims.depth - oldDims.depth) * t;
         const interpSafety = oldDims.safety + (newDims.safety - oldDims.safety) * t;
+        const interpBottomHeight = oldDims.bottomHeight + (newDims.bottomHeight - oldDims.bottomHeight) * t;
+        const interpTopHeight = oldDims.topHeight + (newDims.topHeight - oldDims.topHeight) * t;
 
-        // Generate intermediate geometry
-        const stlString = this.generateSTL(interpWidth, interpDepth, interpSafety);
+        const stlString = this.generateSTL(interpWidth, interpDepth, interpSafety, interpBottomHeight, interpTopHeight);
         if (stlString) {
           const geometry = loader.parse(stlString);
           if (this.mesh) {
@@ -129,10 +137,11 @@ export default {
         if (t < 1) {
           requestAnimationFrame(animate);
         } else {
-          // At the end, update our trackers
           this.currentWidth = newDims.width;
           this.currentDepth = newDims.depth;
           this.currentSafety = newDims.safety;
+          this.currentBottomHeight = newDims.bottomHeight;
+          this.currentTopHeight = newDims.topHeight;
         }
       };
       requestAnimationFrame(animate);
@@ -142,19 +151,9 @@ export default {
       const renderHeight = 500;
       this.scene = new THREE.Scene();
 
-      // Create a perspective camera.
       this.camera = new THREE.PerspectiveCamera(75, renderWidth / renderHeight, 0.1, 1000);
-
-      // Position the camera so that it sits along the positive Y axis (beyond the front border)
-      // and at an elevation that shows the model’s lower edge (Z=0) at the bottom.
-      // Parameters: 3/4th, distance, from-above axis
       this.camera.position.set(0, 150, 100);
-
-      // Look at a target that is centered horizontally and near the middle of the model's vertical extent.
-      // Here we use (0, 0, 10) assuming the model’s vertical extent is roughly 0 to 20.
       this.camera.lookAt(0, 0, 10);
-
-      // Ensure the camera's up vector remains Z-up.
       this.camera.up.set(0, 0, 1);
 
       this.renderer = new THREE.WebGLRenderer({
@@ -164,7 +163,6 @@ export default {
       this.renderer.setSize(renderWidth, renderHeight);
       this.renderer.setClearColor(0xf0f0f0);
 
-      // Lighting setup
       const ambientLight = new THREE.AmbientLight(0x404040);
       this.scene.add(ambientLight);
 
@@ -172,8 +170,6 @@ export default {
       directionalLight.position.set(1, 1, 1).normalize();
       this.scene.add(directionalLight);
 
-      // Use TrackballControls for user interaction.
-      // Here we restrict the polar angle so the user sees the model from the intended perspective.
       this.controls = new TrackballControls(this.camera, this.renderer.domElement);
       this.controls.rotateSpeed = 1.0;
       this.controls.zoomSpeed = 1.2;
@@ -182,9 +178,6 @@ export default {
       this.controls.noPan = false;
       this.controls.staticMoving = false;
       this.controls.dynamicDampingFactor = 0.05;
-
-      // Limit vertical rotation: prevents the view from flipping over
-      // and helps keep the front side facing the user.
       this.controls.minPolarAngle = Math.PI / 4;
       this.controls.maxPolarAngle = Math.PI / 2;
 

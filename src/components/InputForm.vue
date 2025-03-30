@@ -1,7 +1,7 @@
 <template>
   <form
     @submit.prevent
-    class="flex flex-col sm:flex-row sm:space-x-4 items-end"
+    class="flex flex-col sm:flex-row sm:flex-wrap sm:space-x-4 items-end"
     style="width: 100%; max-width: 600px; margin: 0 auto; box-sizing: border-box;"
   >
     <!-- Width input -->
@@ -64,6 +64,34 @@
         />
       </div>
     </div>
+
+    <!-- Bottom Height input -->
+    <div class="flex-1 mb-4 sm:mb-0">
+      <label class="block text-sm font-medium text-gray-700">Bottom Height (mm):</label>
+      <input
+        v-model.number="localBottomHeight"
+        @blur="emitValues"
+        @keyup.enter="emitValues"
+        @change="emitValues"
+        type="number"
+        placeholder="Enter bottom height"
+        class="mt-1 p-2 border border-gray-300 rounded-md w-full"
+      />
+    </div>
+
+    <!-- Top Height input -->
+    <div class="flex-1 mb-4 sm:mb-0">
+      <label class="block text-sm font-medium text-gray-700">Top Height (mm):</label>
+      <input
+        v-model.number="localTopHeight"
+        @blur="emitValues"
+        @keyup.enter="emitValues"
+        @change="emitValues"
+        type="number"
+        placeholder="Enter top height"
+        class="mt-1 p-2 border border-gray-300 rounded-md w-full"
+      />
+    </div>
   </form>
 </template>
 
@@ -82,13 +110,23 @@ export default {
     initialSafety: {
       type: Number,
       default: 0
+    },
+    initialBottomHeight: {
+      type: Number,
+      default: 15
+    },
+    initialTopHeight: {
+      type: Number,
+      default: 25
     }
   },
   data() {
     return {
       localWidth: this.initialWidth,
       localDepth: this.initialDepth,
-      localSafety: this.initialSafety
+      localSafety: this.initialSafety,
+      localBottomHeight: this.initialBottomHeight,
+      localTopHeight: this.initialTopHeight
     };
   },
   methods: {
@@ -96,7 +134,9 @@ export default {
       this.$emit('update-dimensions', {
         width: this.localWidth,
         depth: this.localDepth,
-        safety: this.localSafety
+        safety: this.localSafety,
+        bottomHeight: this.localBottomHeight,
+        topHeight: this.localTopHeight
       });
     }
   }
