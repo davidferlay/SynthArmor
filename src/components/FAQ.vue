@@ -40,16 +40,16 @@ export default {
         {
           question: "What is this ?",
           answer:
-            "This app is designed to help you generate 3D model of a generic cover protection for all your musical (and otherwise) gear. The resulting STL file can be downloaded and 3D printed.",
+            "This app is designed to help you generate 3D model of a cover protection for all your gear, musical and otherwise. The resulting STL file can be downloaded and 3D printed.",
           open: false
         },
         {
           question: "How does it work ?",
           answer:
-            `Tweak the dimensions of the generic cover model to your needs:
+            `Update the dimensions of the cover to your needs:
             <ul class="list-disc pl-6 mt-2">
               <li>Input the precise dimensions of the machine you want the cover to be for</li>
-              <li>Optionaly - Fine adjust dimensions using the slider.</li>
+              <li>Optionally, fine adjust dimensions using the Safety Offset field. This value will be added to both width and depth.</li>
             </ul>`,
           open: false
         }
