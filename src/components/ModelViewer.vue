@@ -29,7 +29,8 @@ export default {
       currentBottomHeight: 0,
       currentTopHeight: 0,
       currentBorderThickness: 0,
-      tweenDuration: 1000 // ms
+      tweenDuration: 1000, // ms
+      edgeLines: null
     };
   },
   computed: {
@@ -111,9 +112,16 @@ export default {
       this.stlData = stlString;
       const loader = new STLLoader();
       const geometry = loader.parse(stlString);
-      const material = new THREE.MeshStandardMaterial({ color: 0x0077ff });
+      // Use a pastel color for the material and adjust roughness/metalness for a softer look.
+      const material = new THREE.MeshStandardMaterial({ color: 0xa8dadc, roughness: 0.6, metalness: 0.1 });
       this.mesh = new THREE.Mesh(geometry, material);
       this.scene.add(this.mesh);
+      // Add highlighted edges using EdgesGeometry.
+      const edges = new THREE.EdgesGeometry(geometry);
+      const edgeMaterial = new THREE.LineBasicMaterial({ color: 0x333333 });
+      const edgeLines = new THREE.LineSegments(edges, edgeMaterial);
+      this.scene.add(edgeLines);
+      this.edgeLines = edgeLines;
     },
     animateDimensionsTransition(oldDims, newDims) {
       const startTime = performance.now();
@@ -138,6 +146,15 @@ export default {
             this.mesh.geometry.dispose();
             this.mesh.geometry = geometry;
           }
+          // Update the edge overlay for a highlighted effect.
+          if (this.edgeLines) {
+            this.scene.remove(this.edgeLines);
+            this.edgeLines.geometry.dispose();
+          }
+          const newEdges = new THREE.EdgesGeometry(geometry);
+          const newEdgeLines = new THREE.LineSegments(newEdges, new THREE.LineBasicMaterial({ color: 0x333333 }));
+          this.scene.add(newEdgeLines);
+          this.edgeLines = newEdgeLines;
           this.stlData = stlString;
         }
 
@@ -169,14 +186,24 @@ export default {
         antialias: true
       });
       this.renderer.setSize(renderWidth, renderHeight);
-      this.renderer.setClearColor(0xf0f0f0);
+      // Use a soft pastel background color.
+      this.renderer.setClearColor(0xf7f7f7);
 
-      const ambientLight = new THREE.AmbientLight(0x404040);
+      // Replace basic ambient/directional lights with a more realistic lighting setup.
+      const ambientLight = new THREE.AmbientLight(0x707070, 0.5);
       this.scene.add(ambientLight);
 
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-      directionalLight.position.set(1, 1, 1).normalize();
-      this.scene.add(directionalLight);
+      const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6);
+      hemiLight.position.set(0, 200, 0);
+      this.scene.add(hemiLight);
+
+      const directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.8);
+      directionalLight1.position.set(1, 1, 1).normalize();
+      this.scene.add(directionalLight1);
+
+      const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.4);
+      directionalLight2.position.set(-1, -1, 1).normalize();
+      this.scene.add(directionalLight2);
 
       this.controls = new TrackballControls(this.camera, this.renderer.domElement);
       this.controls.rotateSpeed = 1.0;
@@ -192,7 +219,7 @@ export default {
       this.animate();
     },
     animate() {
-      requestAnimationFrame(this.animate);
+      requestAnimationFrame(this.animate.bind(this));
       if (this.controls) this.controls.update();
       this.renderer.render(this.scene, this.camera);
     },
