@@ -15,13 +15,17 @@ export function createGeometry({
   // cornerOverlap ensures a seamless overlap at the corners/edges.
   const cornerOverlap = borderThickness * 2;
 
+  // Horizontal offset for the back-hole:
+  //  0 = centered, negative = move left, positive = move right
+  const holeXOffset = 0;
+
   // Compute effective dimensions based on user input and safety offset.
   const effectiveWidth = width + safety;
   const effectiveDepth = depth + safety;
 
   // --- Bottom inner cuboid borders ---
   // The bottom cuboid is "anchored" at its top side at z = 0 and grows downward.
-  // It therefore spans z = -bottomHeight … 0.
+  // It spans z = -bottomHeight … 0.
   const bottomZ = -bottomHeight / 2;
   const bottomFrontBorder = translate(
     [0,  effectiveDepth / 2 + borderThickness / 2, bottomZ],
@@ -43,14 +47,15 @@ export function createGeometry({
   // --- Carve a hollow cuboid (55 mm × 10 mm) from the back border ---
   // The hole's bottom face sits at the wall's bottom edge (z = -bottomHeight),
   // and its top face rises to z = -bottomHeight + holeHeight.
-  const holeWidth  = 35;
+  const holeWidth  = 95;
   const holeHeight = 20;
-  // Make the cut‐out slightly thicker in Y so it fully passes through
+  // Make the cut‐out slightly thicker in Y so it fully passes through the wall
   const cutout = cuboid({ size: [holeWidth, borderThickness + cornerOverlap, holeHeight] });
-  // Position it flush to the back face (Y), with its bottom at z = -bottomHeight
+  // Position it flush to the back face (Y), shifted in X by holeXOffset,
+  // with its bottom at z = -bottomHeight
   const cutoutPos = translate(
     [
-      0,
+      holeXOffset,
       -effectiveDepth / 2 - borderThickness / 2,
       /* bottom edge */ -bottomHeight + holeHeight / 2
     ],
@@ -99,4 +104,3 @@ export function createGeometry({
     topCover
   ];
 }
-
