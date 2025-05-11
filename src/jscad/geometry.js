@@ -13,24 +13,28 @@ export function createGeometry({
   borderThickness = 2.5,
 
   // Back‐side hole options
-  enableBackHole = true,
+  enableBackHole = false,
   backHoleXOffset = 0,
+  backHoleWidth = 55,
+  backHoleHeight = 10,
 
   // Front‐side hole options
-  enableFrontHole = false,
-  frontHoleXOffset = 0,
+  enableFrontHole = true,
+  frontHoleXOffset = 20,
+  frontHoleWidth = 100,
+  frontHoleHeight = 15,
 
-  // Left‐side hole options (now truly on the left when viewed)
+  // Left‐side hole options
   enableLeftHole = true,
-  leftHoleYOffset = 0,
+  leftHoleYOffset = -20,
+  leftHoleWidth = 55,
+  leftHoleHeight = 10,
 
-  // Right‐side hole options (now truly on the right when viewed)
-  enableRightHole = true,
+  // Right‐side hole options
+  enableRightHole = false,
   rightHoleYOffset = 0,
-
-  // Shared hole dimensions
-  holeWidth = 55,
-  holeHeight = 10
+  rightHoleWidth = 55,
+  rightHoleHeight = 10
 }) {
   const cornerOverlap = borderThickness * 2;
   const effectiveWidth = width + safety;
@@ -39,89 +43,113 @@ export function createGeometry({
   // --- Bottom borders (anchored at z=0, grow downward) ---
   const bottomZ = -bottomHeight / 2;
   const bottomFrontBorder = translate(
-    [0,  effectiveDepth/2 + borderThickness/2, bottomZ],
+    [0,  effectiveDepth / 2 + borderThickness / 2, bottomZ],
     cuboid({ size: [effectiveWidth + cornerOverlap, borderThickness, bottomHeight] })
   );
   const bottomBackBorder = translate(
-    [0, -effectiveDepth/2 - borderThickness/2, bottomZ],
+    [0, -effectiveDepth / 2 - borderThickness / 2, bottomZ],
     cuboid({ size: [effectiveWidth + cornerOverlap, borderThickness, bottomHeight] })
   );
   const bottomRightBorder = translate(
-    [ effectiveWidth/2 + borderThickness/2, 0, bottomZ],
+    [ effectiveWidth / 2 + borderThickness / 2, 0, bottomZ],
     cuboid({ size: [borderThickness, effectiveDepth + cornerOverlap, bottomHeight] })
   );
   const bottomLeftBorder = translate(
-    [-effectiveWidth/2 - borderThickness/2, 0, bottomZ],
+    [-effectiveWidth / 2 - borderThickness / 2, 0, bottomZ],
     cuboid({ size: [borderThickness, effectiveDepth + cornerOverlap, bottomHeight] })
   );
 
   // --- Carve back‐hole if enabled ---
   let bottomBackBorderFinal = bottomBackBorder;
   if (enableBackHole) {
-    const cutout = cuboid({ size: [holeWidth, borderThickness + cornerOverlap, holeHeight] });
-    const cutoutPos = translate(
-      [ backHoleXOffset, -effectiveDepth/2 - borderThickness/2, -bottomHeight + holeHeight/2 ],
-      cutout
+    const backCutout = cuboid({
+      size: [backHoleWidth, borderThickness + cornerOverlap, backHoleHeight]
+    });
+    const backCutoutPos = translate(
+      [
+        backHoleXOffset,
+        -effectiveDepth / 2 - borderThickness / 2,
+        -bottomHeight + backHoleHeight / 2
+      ],
+      backCutout
     );
-    bottomBackBorderFinal = subtract(bottomBackBorder, cutoutPos);
+    bottomBackBorderFinal = subtract(bottomBackBorder, backCutoutPos);
   }
 
   // --- Carve front‐hole if enabled ---
   let bottomFrontBorderFinal = bottomFrontBorder;
   if (enableFrontHole) {
-    const cutout = cuboid({ size: [holeWidth, borderThickness + cornerOverlap, holeHeight] });
-    const cutoutPos = translate(
-      [ frontHoleXOffset, effectiveDepth/2 + borderThickness/2, -bottomHeight + holeHeight/2 ],
-      cutout
+    const frontCutout = cuboid({
+      size: [frontHoleWidth, borderThickness + cornerOverlap, frontHoleHeight]
+    });
+    const frontCutoutPos = translate(
+      [
+        frontHoleXOffset,
+        effectiveDepth / 2 + borderThickness / 2,
+        -bottomHeight + frontHoleHeight / 2
+      ],
+      frontCutout
     );
-    bottomFrontBorderFinal = subtract(bottomFrontBorder, cutoutPos);
+    bottomFrontBorderFinal = subtract(bottomFrontBorder, frontCutoutPos);
   }
 
-  // --- Carve left‐side hole if enabled (positive X border) ---
+  // --- Carve left‐side hole if enabled ---
   let bottomRightBorderFinal = bottomRightBorder;
   if (enableLeftHole) {
-    const cutout = cuboid({ size: [borderThickness + cornerOverlap, holeWidth, holeHeight] });
-    const cutoutPos = translate(
-      [ effectiveWidth/2 + borderThickness/2, leftHoleYOffset, -bottomHeight + holeHeight/2 ],
-      cutout
+    const leftCutout = cuboid({
+      size: [borderThickness + cornerOverlap, leftHoleWidth, leftHoleHeight]
+    });
+    const leftCutoutPos = translate(
+      [
+        effectiveWidth / 2 + borderThickness / 2,
+        leftHoleYOffset,
+        -bottomHeight + leftHoleHeight / 2
+      ],
+      leftCutout
     );
-    bottomRightBorderFinal = subtract(bottomRightBorder, cutoutPos);
+    bottomRightBorderFinal = subtract(bottomRightBorder, leftCutoutPos);
   }
 
-  // --- Carve right‐side hole if enabled (negative X border) ---
+  // --- Carve right‐side hole if enabled ---
   let bottomLeftBorderFinal = bottomLeftBorder;
   if (enableRightHole) {
-    const cutout = cuboid({ size: [borderThickness + cornerOverlap, holeWidth, holeHeight] });
-    const cutoutPos = translate(
-      [ -effectiveWidth/2 - borderThickness/2, rightHoleYOffset, -bottomHeight + holeHeight/2 ],
-      cutout
+    const rightCutout = cuboid({
+      size: [borderThickness + cornerOverlap, rightHoleWidth, rightHoleHeight]
+    });
+    const rightCutoutPos = translate(
+      [
+        -effectiveWidth / 2 - borderThickness / 2,
+        rightHoleYOffset,
+        -bottomHeight + rightHoleHeight / 2
+      ],
+      rightCutout
     );
-    bottomLeftBorderFinal = subtract(bottomLeftBorder, cutoutPos);
+    bottomLeftBorderFinal = subtract(bottomLeftBorder, rightCutoutPos);
   }
 
   // --- Top borders (anchored at z=0, grow upward) ---
   const topZ = topHeight / 2;
-  const topInnerWidth  = effectiveWidth  - borderThickness/2;
-  const topInnerDepth  = effectiveDepth  - borderThickness/2;
+  const topInnerWidth  = effectiveWidth  - borderThickness / 2;
+  const topInnerDepth  = effectiveDepth  - borderThickness / 2;
   const topInnerFrontBorder = translate(
-    [0,  topInnerDepth/2 + borderThickness/2, topZ],
+    [0,  topInnerDepth / 2 + borderThickness / 2, topZ],
     cuboid({ size: [topInnerWidth + cornerOverlap, borderThickness, topHeight] })
   );
   const topInnerBackBorder = translate(
-    [0, -topInnerDepth/2 - borderThickness/2, topZ],
+    [0, -topInnerDepth / 2 - borderThickness / 2, topZ],
     cuboid({ size: [topInnerWidth + cornerOverlap, borderThickness, topHeight] })
   );
   const topInnerRightBorder = translate(
-    [ topInnerWidth/2 + borderThickness/2, 0, topZ],
+    [ topInnerWidth / 2 + borderThickness / 2, 0, topZ],
     cuboid({ size: [borderThickness, topInnerDepth + cornerOverlap, topHeight] })
   );
   const topInnerLeftBorder = translate(
-    [-topInnerWidth/2 - borderThickness/2, 0, topZ],
+    [-topInnerWidth / 2 - borderThickness / 2, 0, topZ],
     cuboid({ size: [borderThickness, topInnerDepth + cornerOverlap, topHeight] })
   );
 
   // --- Top cover above the inner borders ---
-  const topCoverZ = topHeight + borderThickness/2;
+  const topCoverZ = topHeight + borderThickness / 2;
   const topCover = translate(
     [0, 0, topCoverZ],
     cuboid({ size: [topInnerWidth + cornerOverlap, topInnerDepth + cornerOverlap, borderThickness] })
