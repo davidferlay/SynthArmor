@@ -33,6 +33,7 @@
             <input
               type="number"
               v-model.number="local.backHoleWidth"
+              min="0"
               class="w-full p-2 border rounded"
             />
           </div>
@@ -41,6 +42,7 @@
             <input
               type="number"
               v-model.number="local.backHoleHeight"
+              min="0"
               class="w-full p-2 border rounded"
             />
           </div>
@@ -77,6 +79,7 @@
             <input
               type="number"
               v-model.number="local.frontHoleWidth"
+              min="0"
               class="w-full p-2 border rounded"
             />
           </div>
@@ -85,6 +88,7 @@
             <input
               type="number"
               v-model.number="local.frontHoleHeight"
+              min="0"
               class="w-full p-2 border rounded"
             />
           </div>
@@ -121,6 +125,7 @@
             <input
               type="number"
               v-model.number="local.rightHoleWidth"
+              min="0"
               class="w-full p-2 border rounded"
             />
           </div>
@@ -129,6 +134,7 @@
             <input
               type="number"
               v-model.number="local.rightHoleHeight"
+              min="0"
               class="w-full p-2 border rounded"
             />
           </div>
@@ -165,6 +171,7 @@
             <input
               type="number"
               v-model.number="local.leftHoleWidth"
+              min="0"
               class="w-full p-2 border rounded"
             />
           </div>
@@ -173,6 +180,7 @@
             <input
               type="number"
               v-model.number="local.leftHoleHeight"
+              min="0"
               class="w-full p-2 border rounded"
             />
           </div>
@@ -235,7 +243,6 @@ export default {
     local: {
       deep: true,
       handler() {
-        // emit every time any local field changes
         this.$emit('update-hole-options', { ...this.local });
       }
     }
