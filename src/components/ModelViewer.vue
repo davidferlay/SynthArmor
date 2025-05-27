@@ -91,6 +91,7 @@ export default {
           const oldDims = dims.reduce((o, k) => (o[k] = oldOpts[k], o), {});
           const newDims = dims.reduce((o, k) => (o[k] = newOpts[k], o), {});
           this.animateDimensionsTransition(oldDims, newDims);
+
         } else {
           // any hole-option changed → immediate rebuild
           this.rebuildMesh();
@@ -109,11 +110,11 @@ export default {
 
   mounted() {
     // initialize trackers
-    this.currentWidth          = this.width;
-    this.currentDepth          = this.depth;
-    this.currentSafety         = this.safety;
-    this.currentBottomHeight   = this.bottomHeight;
-    this.currentTopHeight      = this.topHeight;
+    this.currentWidth           = this.width;
+    this.currentDepth           = this.depth;
+    this.currentSafety          = this.safety;
+    this.currentBottomHeight    = this.bottomHeight;
+    this.currentTopHeight       = this.topHeight;
     this.currentBorderThickness = this.borderThickness;
 
     this.initScene();
@@ -122,30 +123,35 @@ export default {
 
   methods: {
     generateSTL(width, depth, safety, bottomHeight, topHeight, borderThickness) {
+      // clamp all hole heights to >= 0, and treat null/undefined as 0
+      const clamp = v => Math.max(0, Number(v) || 0);
+
+      const opts = {
+        width, depth, safety, bottomHeight, topHeight, borderThickness,
+
+        enableBackHole:   this.enableBackHole,
+        backHoleXOffset:  this.backHoleXOffset,
+        backHoleWidth:    this.backHoleWidth,
+        backHoleHeight:   clamp(this.backHoleHeight),
+
+        enableFrontHole:   this.enableFrontHole,
+        frontHoleXOffset:  this.frontHoleXOffset,
+        frontHoleWidth:    this.frontHoleWidth,
+        frontHoleHeight:   clamp(this.frontHoleHeight),
+
+        enableRightHole:   this.enableRightHole,
+        rightHoleXOffset:  this.rightHoleXOffset,
+        rightHoleWidth:    this.rightHoleWidth,
+        rightHoleHeight:   clamp(this.rightHoleHeight),
+
+        enableLeftHole:    this.enableLeftHole,
+        leftHoleXOffset:   this.leftHoleXOffset,
+        leftHoleWidth:     this.leftHoleWidth,
+        leftHoleHeight:    clamp(this.leftHoleHeight)
+      };
+
       try {
-        const geometryArray = createGeometry({
-          width, depth, safety, bottomHeight, topHeight, borderThickness,
-
-          enableBackHole:   this.enableBackHole,
-          backHoleXOffset:  this.backHoleXOffset,
-          backHoleWidth:    this.backHoleWidth,
-          backHoleHeight:   this.backHoleHeight,
-
-          enableFrontHole:   this.enableFrontHole,
-          frontHoleXOffset:  this.frontHoleXOffset,
-          frontHoleWidth:    this.frontHoleWidth,
-          frontHoleHeight:   this.frontHoleHeight,
-
-          enableRightHole:   this.enableRightHole,
-          rightHoleXOffset:  this.rightHoleXOffset,
-          rightHoleWidth:    this.rightHoleWidth,
-          rightHoleHeight:   this.rightHoleHeight,
-
-          enableLeftHole:    this.enableLeftHole,
-          leftHoleXOffset:   this.leftHoleXOffset,
-          leftHoleWidth:     this.leftHoleWidth,
-          leftHoleHeight:    this.leftHoleHeight
-        });
+        const geometryArray = createGeometry(opts);
         const stlDataArray = serialize({ binary: false }, geometryArray);
         return stlDataArray.join('\n');
       } catch (err) {
@@ -169,8 +175,8 @@ export default {
       this.mesh = new THREE.Mesh(geometry, material);
       this.scene.add(this.mesh);
 
-      const edges       = new THREE.EdgesGeometry(geometry);
-      const edgeMat     = new THREE.LineBasicMaterial({ color: 0x333333 });
+      const edges   = new THREE.EdgesGeometry(geometry);
+      const edgeMat = new THREE.LineBasicMaterial({ color: 0x333333 });
       this.edgeLines = new THREE.LineSegments(edges, edgeMat);
       this.scene.add(this.edgeLines);
     },
@@ -230,11 +236,11 @@ export default {
           requestAnimationFrame(step);
         } else {
           // commit trackers
-          this.currentWidth = newDims.width;
-          this.currentDepth = newDims.depth;
-          this.currentSafety = newDims.safety;
-          this.currentBottomHeight = newDims.bottomHeight;
-          this.currentTopHeight = newDims.topHeight;
+          this.currentWidth           = newDims.width;
+          this.currentDepth           = newDims.depth;
+          this.currentSafety          = newDims.safety;
+          this.currentBottomHeight    = newDims.bottomHeight;
+          this.currentTopHeight       = newDims.topHeight;
           this.currentBorderThickness = newDims.borderThickness;
         }
       };
