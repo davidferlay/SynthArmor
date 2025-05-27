@@ -14,25 +14,25 @@ export function createGeometry({
 
   // Back‐side hole options
   enableBackHole   = true,
-  backHoleXOffset  = -30,
+  backHoleXOffset  = 30,
   backHoleWidth    = 55,
   backHoleHeight   = 10,
 
   // Front‐side hole options
   enableFrontHole  = true,
-  frontHoleXOffset = -30,
+  frontHoleXOffset = 30,
   frontHoleWidth   = 55,
   frontHoleHeight  = 10,
 
   // Right‐side hole options (horizontal offset along local right)
   enableRightHole   = true,
-  rightHoleXOffset  = -30,
+  rightHoleXOffset  = 30,
   rightHoleWidth    = 55,
   rightHoleHeight   = 10,
 
   // Left‐side hole options (horizontal offset along local left)
   enableLeftHole  = true,
-  leftHoleXOffset = -30,
+  leftHoleXOffset = 30,
   leftHoleWidth   = 55,
   leftHoleHeight  = 10
 }) {
@@ -68,7 +68,7 @@ export function createGeometry({
     // positive backHoleXOffset moves hole to the right when facing the back (i.e. -X dir), so invert sign
     const backCutoutPos = translate(
       [
-        -backHoleXOffset,
+        backHoleXOffset,
         -effectiveDepth/2 - borderThickness/2,
         -bottomHeight + backHoleHeight/2
       ],
@@ -86,7 +86,7 @@ export function createGeometry({
     // positive frontHoleXOffset moves hole to the right when facing the front (i.e. +X dir)
     const frontCutoutPos = translate(
       [
-        frontHoleXOffset,
+        -frontHoleXOffset,
         effectiveDepth/2 + borderThickness/2,
         -bottomHeight + frontHoleHeight/2
       ],
@@ -105,7 +105,7 @@ export function createGeometry({
     const leftCutoutPos = translate(
       [
         -effectiveWidth/2 - borderThickness/2,
-        leftHoleXOffset,
+        -leftHoleXOffset,
         -bottomHeight + leftHoleHeight/2
       ],
       leftCutout
@@ -123,7 +123,7 @@ export function createGeometry({
     const rightCutoutPos = translate(
       [
         effectiveWidth/2 + borderThickness/2,
-        -rightHoleXOffset,
+        rightHoleXOffset,
         -bottomHeight + rightHoleHeight/2
       ],
       rightCutout
