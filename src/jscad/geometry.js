@@ -13,26 +13,26 @@ export function createGeometry({
   borderThickness = 2.5,
 
   // Back‐side hole options
-  enableBackHole   = true,
-  backHoleXOffset  = 30,
+  enableBackHole   = false,
+  backHoleXOffset  = 0,
   backHoleWidth    = 55,
   backHoleHeight   = 10,
 
   // Front‐side hole options
-  enableFrontHole  = true,
-  frontHoleXOffset = 30,
+  enableFrontHole  = false,
+  frontHoleXOffset = 0,
   frontHoleWidth   = 55,
   frontHoleHeight  = 10,
 
   // Right‐side hole options (horizontal offset along local right)
-  enableRightHole   = true,
-  rightHoleXOffset  = 30,
+  enableRightHole   = false,
+  rightHoleXOffset  = 0,
   rightHoleWidth    = 55,
   rightHoleHeight   = 10,
 
   // Left‐side hole options (horizontal offset along local left)
-  enableLeftHole  = true,
-  leftHoleXOffset = 30,
+  enableLeftHole  = false,
+  leftHoleXOffset = 0,
   leftHoleWidth   = 55,
   leftHoleHeight  = 10
 }) {
