@@ -65,7 +65,6 @@ export function createGeometry({
     const backCutout = cuboid({
       size: [ backHoleWidth, borderThickness + cornerOverlap, backHoleHeight ]
     });
-    // positive backHoleXOffset moves hole to the right when facing the back (i.e. -X dir), so invert sign
     const backCutoutPos = translate(
       [
         backHoleXOffset,
@@ -74,7 +73,7 @@ export function createGeometry({
       ],
       backCutout
     );
-    bottomBackBorderFinal = subtract(bottomBackBorder, backCutoutPos);
+    bottomBackBorderFinal = subtract(bottomBackBorderFinal, backCutoutPos);
   }
 
   // --- Front‐side hole ---
@@ -83,7 +82,6 @@ export function createGeometry({
     const frontCutout = cuboid({
       size: [ frontHoleWidth, borderThickness + cornerOverlap, frontHoleHeight ]
     });
-    // positive frontHoleXOffset moves hole to the right when facing the front (i.e. +X dir)
     const frontCutoutPos = translate(
       [
         -frontHoleXOffset,
@@ -92,43 +90,45 @@ export function createGeometry({
       ],
       frontCutout
     );
-    bottomFrontBorderFinal = subtract(bottomFrontBorder, frontCutoutPos);
+    bottomFrontBorderFinal = subtract(bottomFrontBorderFinal, frontCutoutPos);
   }
 
-  // --- Left‐side hole ---
-  let bottomLeftBorderFinal = bottomLeftBorder;
-  if (enableLeftHole) {
-    const leftCutout = cuboid({
-      size: [ borderThickness + cornerOverlap, leftHoleWidth, leftHoleHeight ]
-    });
-    // facing left side (−X dir), positive offset moves hole toward +Y (local right)
-    const leftCutoutPos = translate(
-      [
-        -effectiveWidth/2 - borderThickness/2,
-        -leftHoleXOffset,
-        -bottomHeight + leftHoleHeight/2
-      ],
-      leftCutout
-    );
-    bottomLeftBorderFinal = subtract(bottomLeftBorder, leftCutoutPos);
-  }
-
-  // --- Right‐side hole ---
+  // --- Prepare left/right finals ---
+  let bottomLeftBorderFinal  = bottomLeftBorder;
   let bottomRightBorderFinal = bottomRightBorder;
+
+  // --- Enabled RIGHT hole draws on the LEFT border ---
   if (enableRightHole) {
     const rightCutout = cuboid({
       size: [ borderThickness + cornerOverlap, rightHoleWidth, rightHoleHeight ]
     });
-    // facing right side (+X dir), positive offset moves hole toward -Y (local right)
+    // positive offset moves hole toward -Y (local left)
     const rightCutoutPos = translate(
       [
-        effectiveWidth/2 + borderThickness/2,
-        rightHoleXOffset,
+        -effectiveWidth/2 - borderThickness/2,  // left border X
+        -rightHoleXOffset,
         -bottomHeight + rightHoleHeight/2
       ],
       rightCutout
     );
-    bottomRightBorderFinal = subtract(bottomRightBorder, rightCutoutPos);
+    bottomLeftBorderFinal = subtract(bottomLeftBorderFinal, rightCutoutPos);
+  }
+
+  // --- Enabled LEFT hole draws on the RIGHT border ---
+  if (enableLeftHole) {
+    const leftCutout = cuboid({
+      size: [ borderThickness + cornerOverlap, leftHoleWidth, leftHoleHeight ]
+    });
+    // positive offset moves hole toward +Y (local right)
+    const leftCutoutPos = translate(
+      [
+        effectiveWidth/2 + borderThickness/2,  // right border X
+        leftHoleXOffset,
+        -bottomHeight + leftHoleHeight/2
+      ],
+      leftCutout
+    );
+    bottomRightBorderFinal = subtract(bottomRightBorderFinal, leftCutoutPos);
   }
 
   // --- Top borders (anchored at z=0, grow upward) ---
