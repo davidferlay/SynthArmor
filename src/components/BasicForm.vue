@@ -17,7 +17,7 @@
             min="0"
             max="300"
             step="1"
-            class="w-full"
+            class="flex-1"
           />
           <input
             type="number"
@@ -46,7 +46,7 @@
             min="0"
             max="300"
             step="1"
-            class="w-full"
+            class="flex-1"
           />
           <input
             type="number"
