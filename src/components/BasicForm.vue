@@ -8,7 +8,7 @@
     >
       <!-- Width input with slider -->
       <div class="flex-1 mb-4">
-        <label class="block text-sm font-medium text-gray-700">Width (mm):</label>
+        <label class="block text-sm font-medium text-gray-700">Width:</label>
         <div class="flex items-center space-x-2 mt-1">
           <input
             type="range"
@@ -30,13 +30,14 @@
             step="1"
             placeholder="155"
             class="p-2 border border-gray-300 rounded-md w-16"
-          /> mm
+          />
+          <span class="text-sm text-gray-700">mm</span>
         </div>
       </div>
 
       <!-- Depth input with slider -->
       <div class="flex-1 mb-4">
-        <label class="block text-sm font-medium text-gray-700">Depth (mm):</label>
+        <label class="block text-sm font-medium text-gray-700">Depth:</label>
         <div class="flex items-center space-x-2 mt-1">
           <input
             type="range"
@@ -58,25 +59,29 @@
             step="1"
             placeholder="105"
             class="p-2 border border-gray-300 rounded-md w-16"
-          /> mm
+          />
+          <span class="text-sm text-gray-700">mm</span>
         </div>
       </div>
 
-      <!-- Safety Offset input (number only) -->
+      <!-- Safety Offset input (number only, narrow) -->
       <div class="flex-1 mb-4">
-        <label class="block text-sm font-medium text-gray-700">Safety Offset (mm):</label>
-        <input
-          v-model.number="localSafety"
-          @blur="emitValues"
-          @keyup.enter="emitValues"
-          @change="emitValues"
-          type="number"
-          min="-2"
-          max="2"
-          step="0.1"
-          placeholder="0"
-          class="mt-1 p-2 border border-gray-300 rounded-md w-full"
-        />
+        <label class="block text-sm font-medium text-gray-700">Safety Offset:</label>
+        <div class="mt-1 flex items-center space-x-1">
+          <input
+            v-model.number="localSafety"
+            @blur="emitValues"
+            @keyup.enter="emitValues"
+            @change="emitValues"
+            type="number"
+            min="-2"
+            max="2"
+            step="0.1"
+            placeholder="0"
+            class="p-2 border border-gray-300 rounded-md w-16"
+          />
+          <span class="text-sm text-gray-700">mm</span>
+        </div>
       </div>
     </form>
   </fieldset>

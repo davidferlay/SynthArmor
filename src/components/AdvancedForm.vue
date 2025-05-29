@@ -8,7 +8,7 @@
     >
       <!-- Bottom Height input with slider -->
       <div class="flex-1 mb-4">
-        <label class="block text-sm font-medium text-gray-700">Bottom Height (mm):</label>
+        <label class="block text-sm font-medium text-gray-700">Bottom Height:</label>
         <div class="flex items-center space-x-2 mt-1">
           <input
             type="range"
@@ -30,13 +30,14 @@
             step="1"
             placeholder="15"
             class="p-2 border border-gray-300 rounded-md w-16"
-          /> mm
+          />
+          <span class="text-sm text-gray-700">mm</span>
         </div>
       </div>
 
       <!-- Top Height input with slider -->
       <div class="flex-1 mb-4">
-        <label class="block text-sm font-medium text-gray-700">Top Height (mm):</label>
+        <label class="block text-sm font-medium text-gray-700">Top Height:</label>
         <div class="flex items-center space-x-2 mt-1">
           <input
             type="range"
@@ -58,22 +59,28 @@
             step="1"
             placeholder="25"
             class="p-2 border border-gray-300 rounded-md w-16"
-          /> mm
+          />
+          <span class="text-sm text-gray-700">mm</span>
         </div>
       </div>
 
-      <!-- Border Thickness input (unchanged) -->
+      <!-- Border Thickness input (number only, narrow) -->
       <div class="flex-1 mb-4">
-        <label class="block text-sm font-medium text-gray-700">Border Thickness (mm):</label>
-        <input
-          v-model.number="localBorderThickness"
-          @blur="emitValues"
-          @keyup.enter="emitValues"
-          @change="emitValues"
-          type="number"
-          placeholder="2.5"
-          class="mt-1 p-2 border border-gray-300 rounded-md w-full"
-        />
+        <label class="block text-sm font-medium text-gray-700">Border Thickness:</label>
+        <div class="mt-1 flex items-center space-x-1">
+          <input
+            v-model.number="localBorderThickness"
+            @blur="emitValues"
+            @keyup.enter="emitValues"
+            @change="emitValues"
+            type="number"
+            min="0"
+            step="0.1"
+            placeholder="2.5"
+            class="p-2 border border-gray-300 rounded-md w-16"
+          />
+          <span class="text-sm text-gray-700">mm</span>
+        </div>
       </div>
     </form>
   </fieldset>
@@ -105,3 +112,4 @@ export default {
   }
 };
 </script>
+
