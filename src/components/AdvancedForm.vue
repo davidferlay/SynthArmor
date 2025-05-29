@@ -64,7 +64,7 @@
         </div>
       </div>
 
-      <!-- Border Thickness input (number only, narrow) -->
+      <!-- Border Thickness input -->
       <div class="flex-1 mb-4">
         <label class="block text-sm font-medium text-gray-700">Border Thickness:</label>
         <div class="mt-1 flex items-center space-x-1">
@@ -112,4 +112,3 @@ export default {
   }
 };
 </script>
-

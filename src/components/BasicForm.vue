@@ -64,7 +64,7 @@
         </div>
       </div>
 
-      <!-- Safety Offset input (number only, narrow) -->
+      <!-- Safety Offset input -->
       <div class="flex-1 mb-4">
         <label class="block text-sm font-medium text-gray-700">Safety Offset:</label>
         <div class="mt-1 flex items-center space-x-1">

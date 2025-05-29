@@ -27,33 +27,51 @@
                 min="-100"
                 max="100"
                 step="1"
-                class="w-20 p-1 border rounded"
+                class="p-2 border border-gray-300 rounded-md w-16"
               />
               <span class="text-sm text-gray-700">mm</span>
             </div>
           </div>
+
           <!-- Width -->
           <div>
             <label class="block text-sm font-medium text-gray-700">Width:</label>
-            <div class="mt-1 flex items-center space-x-1">
+            <div class="flex items-center space-x-2 mt-1">
+              <input
+                type="range"
+                v-model.number="local.backHoleWidth"
+                min="0"
+                max="300"
+                step="1"
+                class="w-full"
+              />
               <input
                 type="number"
                 v-model.number="local.backHoleWidth"
                 min="0"
-                class="w-full p-2 border rounded"
+                class="p-2 border border-gray-300 rounded-md w-16"
               />
               <span class="text-sm text-gray-700">mm</span>
             </div>
           </div>
+
           <!-- Height -->
           <div>
             <label class="block text-sm font-medium text-gray-700">Height:</label>
-            <div class="mt-1 flex items-center space-x-1">
+            <div class="flex items-center space-x-2 mt-1">
+              <input
+                type="range"
+                v-model.number="local.backHoleHeight"
+                min="0"
+                max="300"
+                step="1"
+                class="w-full"
+              />
               <input
                 type="number"
                 v-model.number="local.backHoleHeight"
                 min="0"
-                class="w-full p-2 border rounded"
+                class="p-2 border border-gray-300 rounded-md w-16"
               />
               <span class="text-sm text-gray-700">mm</span>
             </div>
@@ -86,33 +104,51 @@
                 min="-100"
                 max="100"
                 step="1"
-                class="w-20 p-1 border rounded"
+                class="p-2 border border-gray-300 rounded-md w-16"
               />
               <span class="text-sm text-gray-700">mm</span>
             </div>
           </div>
+
           <!-- Width -->
           <div>
             <label class="block text-sm font-medium text-gray-700">Width:</label>
-            <div class="mt-1 flex items-center space-x-1">
+            <div class="flex items-center space-x-2 mt-1">
+              <input
+                type="range"
+                v-model.number="local.frontHoleWidth"
+                min="0"
+                max="300"
+                step="1"
+                class="w-full"
+              />
               <input
                 type="number"
                 v-model.number="local.frontHoleWidth"
                 min="0"
-                class="w-full p-2 border rounded"
+                class="p-2 border border-gray-300 rounded-md w-16"
               />
               <span class="text-sm text-gray-700">mm</span>
             </div>
           </div>
+
           <!-- Height -->
           <div>
             <label class="block text-sm font-medium text-gray-700">Height:</label>
-            <div class="mt-1 flex items-center space-x-1">
+            <div class="flex items-center space-x-2 mt-1">
+              <input
+                type="range"
+                v-model.number="local.frontHoleHeight"
+                min="0"
+                max="300"
+                step="1"
+                class="w-full"
+              />
               <input
                 type="number"
                 v-model.number="local.frontHoleHeight"
                 min="0"
-                class="w-full p-2 border rounded"
+                class="p-2 border border-gray-300 rounded-md w-16"
               />
               <span class="text-sm text-gray-700">mm</span>
             </div>
@@ -145,33 +181,51 @@
                 min="-100"
                 max="100"
                 step="1"
-                class="w-20 p-1 border rounded"
+                class="p-2 border border-gray-300 rounded-md w-16"
               />
               <span class="text-sm text-gray-700">mm</span>
             </div>
           </div>
+
           <!-- Width -->
           <div>
             <label class="block text-sm font-medium text-gray-700">Width:</label>
-            <div class="mt-1 flex items-center space-x-1">
+            <div class="flex items-center space-x-2 mt-1">
+              <input
+                type="range"
+                v-model.number="local.rightHoleWidth"
+                min="0"
+                max="300"
+                step="1"
+                class="w-full"
+              />
               <input
                 type="number"
                 v-model.number="local.rightHoleWidth"
                 min="0"
-                class="w-full p-2 border rounded"
+                class="p-2 border border-gray-300 rounded-md w-16"
               />
               <span class="text-sm text-gray-700">mm</span>
             </div>
           </div>
+
           <!-- Height -->
           <div>
             <label class="block text-sm font-medium text-gray-700">Height:</label>
-            <div class="mt-1 flex items-center space-x-1">
+            <div class="flex items-center space-x-2 mt-1">
+              <input
+                type="range"
+                v-model.number="local.rightHoleHeight"
+                min="0"
+                max="300"
+                step="1"
+                class="w-full"
+              />
               <input
                 type="number"
                 v-model.number="local.rightHoleHeight"
                 min="0"
-                class="w-full p-2 border rounded"
+                class="p-2 border border-gray-300 rounded-md w-16"
               />
               <span class="text-sm text-gray-700">mm</span>
             </div>
@@ -204,39 +258,58 @@
                 min="-100"
                 max="100"
                 step="1"
-                class="w-20 p-1 border rounded"
+                class="p-2 border border-gray-300 rounded-md w-16"
               />
               <span class="text-sm text-gray-700">mm</span>
             </div>
           </div>
+
           <!-- Width -->
           <div>
             <label class="block text-sm font-medium text-gray-700">Width:</label>
-            <div class="mt-1 flex items-center space-x-1">
+            <div class="flex items-center space-x-2 mt-1">
+              <input
+                type="range"
+                v-model.number="local.leftHoleWidth"
+                min="0"
+                max="300"
+                step="1"
+                class="w-full"
+              />
               <input
                 type="number"
                 v-model.number="local.leftHoleWidth"
                 min="0"
-                class="w-full p-2 border rounded"
+                class="p-2 border border-gray-300 rounded-md w-16"
               />
               <span class="text-sm text-gray-700">mm</span>
             </div>
           </div>
+
           <!-- Height -->
           <div>
             <label class="block text-sm font-medium text-gray-700">Height:</label>
-            <div class="mt-1 flex items-center space-x-1">
+            <div class="flex items-center space-x-2 mt-1">
+              <input
+                type="range"
+                v-model.number="local.leftHoleHeight"
+                min="0"
+                max="300"
+                step="1"
+                class="w-full"
+              />
               <input
                 type="number"
                 v-model.number="local.leftHoleHeight"
                 min="0"
-                class="w-full p-2 border rounded"
+                class="p-2 border border-gray-300 rounded-md w-16"
               />
               <span class="text-sm text-gray-700">mm</span>
             </div>
           </div>
         </div>
       </div>
+
     </div>
   </fieldset>
 </template>
