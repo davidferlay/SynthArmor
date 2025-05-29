@@ -277,7 +277,7 @@ export default {
       this.controls = new TrackballControls(this.camera, this.renderer.domElement);
       this.controls.rotateSpeed = 1.0;
       this.controls.zoomSpeed   = 1.2;
-      this.controls.panSpeed    = 0.8;
+      this.controls.panSpeed    = 0.2;
       this.controls.dynamicDampingFactor = 0.05;
       this.controls.minPolarAngle = Math.PI/4;
       this.controls.maxPolarAngle = Math.PI/2;
