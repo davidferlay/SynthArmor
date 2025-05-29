@@ -62,32 +62,21 @@
         </div>
       </div>
 
-      <!-- Safety Offset input (unchanged) -->
+      <!-- Safety Offset input (number only) -->
       <div class="flex-1 mb-4">
         <label class="block text-sm font-medium text-gray-700">Safety Offset (mm):</label>
-        <div class="flex items-center space-x-2 mt-1">
-          <input
-            type="range"
-            v-model.number="localSafety"
-            @input="emitValues"
-            min="-2"
-            max="2"
-            step="0.1"
-            class="w-full"
-          />
-          <input
-            type="number"
-            v-model.number="localSafety"
-            @blur="emitValues"
-            @keyup.enter="emitValues"
-            @change="emitValues"
-            min="-2"
-            max="2"
-            step="0.1"
-            placeholder="0"
-            class="p-2 border border-gray-300 rounded-md w-16"
-          /> mm
-        </div>
+        <input
+          v-model.number="localSafety"
+          @blur="emitValues"
+          @keyup.enter="emitValues"
+          @change="emitValues"
+          type="number"
+          min="-2"
+          max="2"
+          step="0.1"
+          placeholder="0"
+          class="mt-1 p-2 border border-gray-300 rounded-md w-full"
+        />
       </div>
     </form>
   </fieldset>
