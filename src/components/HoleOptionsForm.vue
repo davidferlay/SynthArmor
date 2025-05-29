@@ -4,312 +4,279 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <!-- Back‐side hole -->
       <div>
-        <label class="inline-flex items-center">
+        <div class="inline-flex items-center mb-2">
           <input type="checkbox" v-model="local.enableBackHole" class="mr-2"/>
-          Enable Back Hole
-        </label>
-        <div v-if="local.enableBackHole" class="mt-2 space-y-2">
+          <span class="text-sm font-medium text-gray-700">Enable Back Hole</span>
+        </div>
+        <div v-if="local.enableBackHole" class="space-y-2">
           <!-- Offset X -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Offset X:</label>
-            <div class="flex items-center space-x-2 mt-1">
-              <input
-                type="range"
-                v-model.number="local.backHoleXOffset"
-                min="-100"
-                max="100"
-                step="1"
-                class="w-full"
-              />
-              <input
-                type="number"
-                v-model.number="local.backHoleXOffset"
-                min="-100"
-                max="100"
-                step="1"
-                class="p-2 border border-gray-300 rounded-md w-16"
-              />
-              <span class="text-sm text-gray-700">mm</span>
-            </div>
+          <div class="flex items-center space-x-2">
+            <label class="w-24 text-sm text-gray-700">Offset X:</label>
+            <input
+              type="range"
+              v-model.number="local.backHoleXOffset"
+              min="-100"
+              max="100"
+              step="1"
+              class="flex-1"
+            />
+            <input
+              type="number"
+              v-model.number="local.backHoleXOffset"
+              min="-100"
+              max="100"
+              step="1"
+              class="p-2 border border-gray-300 rounded-md w-16"
+            />
+            <span class="text-sm text-gray-700">mm</span>
           </div>
-
           <!-- Width -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Width:</label>
-            <div class="flex items-center space-x-2 mt-1">
-              <input
-                type="range"
-                v-model.number="local.backHoleWidth"
-                min="0"
-                max="300"
-                step="1"
-                class="w-full"
-              />
-              <input
-                type="number"
-                v-model.number="local.backHoleWidth"
-                min="0"
-                class="p-2 border border-gray-300 rounded-md w-16"
-              />
-              <span class="text-sm text-gray-700">mm</span>
-            </div>
+          <div class="flex items-center space-x-2">
+            <label class="w-24 text-sm text-gray-700">Width:</label>
+            <input
+              type="range"
+              v-model.number="local.backHoleWidth"
+              min="0"
+              max="300"
+              step="1"
+              class="flex-1"
+            />
+            <input
+              type="number"
+              v-model.number="local.backHoleWidth"
+              min="0"
+              class="p-2 border border-gray-300 rounded-md w-16"
+            />
+            <span class="text-sm text-gray-700">mm</span>
           </div>
-
           <!-- Height -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Height:</label>
-            <div class="flex items-center space-x-2 mt-1">
-              <input
-                type="range"
-                v-model.number="local.backHoleHeight"
-                min="0"
-                max="300"
-                step="1"
-                class="w-full"
-              />
-              <input
-                type="number"
-                v-model.number="local.backHoleHeight"
-                min="0"
-                class="p-2 border border-gray-300 rounded-md w-16"
-              />
-              <span class="text-sm text-gray-700">mm</span>
-            </div>
+          <div class="flex items-center space-x-2">
+            <label class="w-24 text-sm text-gray-700">Height:</label>
+            <input
+              type="range"
+              v-model.number="local.backHoleHeight"
+              min="0"
+              max="300"
+              step="1"
+              class="flex-1"
+            />
+            <input
+              type="number"
+              v-model.number="local.backHoleHeight"
+              min="0"
+              class="p-2 border border-gray-300 rounded-md w-16"
+            />
+            <span class="text-sm text-gray-700">mm</span>
           </div>
         </div>
       </div>
 
       <!-- Front‐side hole -->
       <div>
-        <label class="inline-flex items-center">
+        <div class="inline-flex items-center mb-2">
           <input type="checkbox" v-model="local.enableFrontHole" class="mr-2"/>
-          Enable Front Hole
-        </label>
-        <div v-if="local.enableFrontHole" class="mt-2 space-y-2">
+          <span class="text-sm font-medium text-gray-700">Enable Front Hole</span>
+        </div>
+        <div v-if="local.enableFrontHole" class="space-y-2">
           <!-- Offset X -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Offset X:</label>
-            <div class="flex items-center space-x-2 mt-1">
-              <input
-                type="range"
-                v-model.number="local.frontHoleXOffset"
-                min="-100"
-                max="100"
-                step="1"
-                class="w-full"
-              />
-              <input
-                type="number"
-                v-model.number="local.frontHoleXOffset"
-                min="-100"
-                max="100"
-                step="1"
-                class="p-2 border border-gray-300 rounded-md w-16"
-              />
-              <span class="text-sm text-gray-700">mm</span>
-            </div>
+          <div class="flex items-center space-x-2">
+            <label class="w-24 text-sm text-gray-700">Offset X:</label>
+            <input
+              type="range"
+              v-model.number="local.frontHoleXOffset"
+              min="-100"
+              max="100"
+              step="1"
+              class="flex-1"
+            />
+            <input
+              type="number"
+              v-model.number="local.frontHoleXOffset"
+              min="-100"
+              max="100"
+              step="1"
+              class="p-2 border border-gray-300 rounded-md w-16"
+            />
+            <span class="text-sm text-gray-700">mm</span>
           </div>
-
           <!-- Width -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Width:</label>
-            <div class="flex items-center space-x-2 mt-1">
-              <input
-                type="range"
-                v-model.number="local.frontHoleWidth"
-                min="0"
-                max="300"
-                step="1"
-                class="w-full"
-              />
-              <input
-                type="number"
-                v-model.number="local.frontHoleWidth"
-                min="0"
-                class="p-2 border border-gray-300 rounded-md w-16"
-              />
-              <span class="text-sm text-gray-700">mm</span>
-            </div>
+          <div class="flex items-center space-x-2">
+            <label class="w-24 text-sm text-gray-700">Width:</label>
+            <input
+              type="range"
+              v-model.number="local.frontHoleWidth"
+              min="0"
+              max="300"
+              step="1"
+              class="flex-1"
+            />
+            <input
+              type="number"
+              v-model.number="local.frontHoleWidth"
+              min="0"
+              class="p-2 border border-gray-300 rounded-md w-16"
+            />
+            <span class="text-sm text-gray-700">mm</span>
           </div>
-
           <!-- Height -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Height:</label>
-            <div class="flex items-center space-x-2 mt-1">
-              <input
-                type="range"
-                v-model.number="local.frontHoleHeight"
-                min="0"
-                max="300"
-                step="1"
-                class="w-full"
-              />
-              <input
-                type="number"
-                v-model.number="local.frontHoleHeight"
-                min="0"
-                class="p-2 border border-gray-300 rounded-md w-16"
-              />
-              <span class="text-sm text-gray-700">mm</span>
-            </div>
+          <div class="flex items-center space-x-2">
+            <label class="w-24 text-sm text-gray-700">Height:</label>
+            <input
+              type="range"
+              v-model.number="local.frontHoleHeight"
+              min="0"
+              max="300"
+              step="1"
+              class="flex-1"
+            />
+            <input
+              type="number"
+              v-model.number="local.frontHoleHeight"
+              min="0"
+              class="p-2 border border-gray-300 rounded-md w-16"
+            />
+            <span class="text-sm text-gray-700">mm</span>
           </div>
         </div>
       </div>
 
       <!-- Right‐side hole -->
       <div>
-        <label class="inline-flex items-center">
+        <div class="inline-flex items-center mb-2">
           <input type="checkbox" v-model="local.enableRightHole" class="mr-2"/>
-          Enable Right Hole
-        </label>
-        <div v-if="local.enableRightHole" class="mt-2 space-y-2">
+          <span class="text-sm font-medium text-gray-700">Enable Right Hole</span>
+        </div>
+        <div v-if="local.enableRightHole" class="space-y-2">
           <!-- Offset X -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Offset X:</label>
-            <div class="flex items-center space-x-2 mt-1">
-              <input
-                type="range"
-                v-model.number="local.rightHoleXOffset"
-                min="-100"
-                max="100"
-                step="1"
-                class="w-full"
-              />
-              <input
-                type="number"
-                v-model.number="local.rightHoleXOffset"
-                min="-100"
-                max="100"
-                step="1"
-                class="p-2 border border-gray-300 rounded-md w-16"
-              />
-              <span class="text-sm text-gray-700">mm</span>
-            </div>
+          <div class="flex items-center space-x-2">
+            <label class="w-24 text-sm text-gray-700">Offset X:</label>
+            <input
+              type="range"
+              v-model.number="local.rightHoleXOffset"
+              min="-100"
+              max="100"
+              step="1"
+              class="flex-1"
+            />
+            <input
+              type="number"
+              v-model.number="local.rightHoleXOffset"
+              min="-100"
+              max="100"
+              step="1"
+              class="p-2 border border-gray-300 rounded-md w-16"
+            />
+            <span class="text-sm text-gray-700">mm</span>
           </div>
-
           <!-- Width -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Width:</label>
-            <div class="flex items-center space-x-2 mt-1">
-              <input
-                type="range"
-                v-model.number="local.rightHoleWidth"
-                min="0"
-                max="300"
-                step="1"
-                class="w-full"
-              />
-              <input
-                type="number"
-                v-model.number="local.rightHoleWidth"
-                min="0"
-                class="p-2 border border-gray-300 rounded-md w-16"
-              />
-              <span class="text-sm text-gray-700">mm</span>
-            </div>
+          <div class="flex items-center space-x-2">
+            <label class="w-24 text-sm text-gray-700">Width:</label>
+            <input
+              type="range"
+              v-model.number="local.rightHoleWidth"
+              min="0"
+              max="300"
+              step="1"
+              class="flex-1"
+            />
+            <input
+              type="number"
+              v-model.number="local.rightHoleWidth"
+              min="0"
+              class="p-2 border border-gray-300 rounded-md w-16"
+            />
+            <span class="text-sm text-gray-700">mm</span>
           </div>
-
           <!-- Height -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Height:</label>
-            <div class="flex items-center space-x-2 mt-1">
-              <input
-                type="range"
-                v-model.number="local.rightHoleHeight"
-                min="0"
-                max="300"
-                step="1"
-                class="w-full"
-              />
-              <input
-                type="number"
-                v-model.number="local.rightHoleHeight"
-                min="0"
-                class="p-2 border border-gray-300 rounded-md w-16"
-              />
-              <span class="text-sm text-gray-700">mm</span>
-            </div>
+          <div class="flex items-center space-x-2">
+            <label class="w-24 text-sm text-gray-700">Height:</label>
+            <input
+              type="range"
+              v-model.number="local.rightHoleHeight"
+              min="0"
+              max="300"
+              step="1"
+              class="flex-1"
+            />
+            <input
+              type="number"
+              v-model.number="local.rightHoleHeight"
+              min="0"
+              class="p-2 border border-gray-300 rounded-md w-16"
+            />
+            <span class="text-sm text-gray-700">mm</span>
           </div>
         </div>
       </div>
 
       <!-- Left‐side hole -->
       <div>
-        <label class="inline-flex items-center">
+        <div class="inline-flex items-center mb-2">
           <input type="checkbox" v-model="local.enableLeftHole" class="mr-2"/>
-          Enable Left Hole
-        </label>
-        <div v-if="local.enableLeftHole" class="mt-2 space-y-2">
+          <span class="text-sm font-medium text-gray-700">Enable Left Hole</span>
+        </div>
+        <div v-if="local.enableLeftHole" class="space-y-2">
           <!-- Offset X -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Offset X:</label>
-            <div class="flex items-center space-x-2 mt-1">
-              <input
-                type="range"
-                v-model.number="local.leftHoleXOffset"
-                min="-100"
-                max="100"
-                step="1"
-                class="w-full"
-              />
-              <input
-                type="number"
-                v-model.number="local.leftHoleXOffset"
-                min="-100"
-                max="100"
-                step="1"
-                class="p-2 border border-gray-300 rounded-md w-16"
-              />
-              <span class="text-sm text-gray-700">mm</span>
-            </div>
+          <div class="flex items-center space-x-2">
+            <label class="w-24 text-sm text-gray-700">Offset X:</label>
+            <input
+              type="range"
+              v-model.number="local.leftHoleXOffset"
+              min="-100"
+              max="100"
+              step="1"
+              class="flex-1"
+            />
+            <input
+              type="number"
+              v-model.number="local.leftHoleXOffset"
+              min="-100"
+              max="100"
+              step="1"
+              class="p-2 border border-gray-300 rounded-md w-16"
+            />
+            <span class="text-sm text-gray-700">mm</span>
           </div>
-
           <!-- Width -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Width:</label>
-            <div class="flex items-center space-x-2 mt-1">
-              <input
-                type="range"
-                v-model.number="local.leftHoleWidth"
-                min="0"
-                max="300"
-                step="1"
-                class="w-full"
-              />
-              <input
-                type="number"
-                v-model.number="local.leftHoleWidth"
-                min="0"
-                class="p-2 border border-gray-300 rounded-md w-16"
-              />
-              <span class="text-sm text-gray-700">mm</span>
-            </div>
+          <div class="flex items-center space-x-2">
+            <label class="w-24 text-sm text-gray-700">Width:</label>
+            <input
+              type="range"
+              v-model.number="local.leftHoleWidth"
+              min="0"
+              max="300"
+              step="1"
+              class="flex-1"
+            />
+            <input
+              type="number"
+              v-model.number="local.leftHoleWidth"
+              min="0"
+              class="p-2 border border-gray-300 rounded-md w-16"
+            />
+            <span class="text-sm text-gray-700">mm</span>
           </div>
-
           <!-- Height -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Height:</label>
-            <div class="flex items-center space-x-2 mt-1">
-              <input
-                type="range"
-                v-model.number="local.leftHoleHeight"
-                min="0"
-                max="300"
-                step="1"
-                class="w-full"
-              />
-              <input
-                type="number"
-                v-model.number="local.leftHoleHeight"
-                min="0"
-                class="p-2 border border-gray-300 rounded-md w-16"
-              />
-              <span class="text-sm text-gray-700">mm</span>
-            </div>
+          <div class="flex items-center space-x-2">
+            <label class="w-24 text-sm text-gray-700">Height:</label>
+            <input
+              type="range"
+              v-model.number="local.leftHoleHeight"
+              min="0"
+              max="300"
+              step="1"
+              class="flex-1"
+            />
+            <input
+              type="number"
+              v-model.number="local.leftHoleHeight"
+              min="0"
+              class="p-2 border border-gray-300 rounded-md w-16"
+            />
+            <span class="text-sm text-gray-700">mm</span>
           </div>
         </div>
       </div>
-
     </div>
   </fieldset>
 </template>
@@ -373,4 +340,3 @@ export default {
   }
 };
 </script>
-
