@@ -6,44 +6,70 @@
       class="flex flex-col sm:flex-row sm:flex-wrap sm:space-x-4 items-end"
       style="width: 100%; max-width: 600px; margin: 0 auto; box-sizing: border-box;"
     >
-      <!-- Width input -->
+      <!-- Width input with slider -->
       <div class="flex-1 mb-4">
         <label class="block text-sm font-medium text-gray-700">Width (mm):</label>
-        <input
-          v-model.number="localWidth"
-          @blur="emitValues"
-          @keyup.enter="emitValues"
-          @change="emitValues"
-          type="number"
-          placeholder="155"
-          class="mt-1 p-2 border border-gray-300 rounded-md w-full"
-        />
+        <div class="flex items-center space-x-2 mt-1">
+          <input
+            type="range"
+            v-model.number="localWidth"
+            @input="emitValues"
+            min="0"
+            max="300"
+            step="1"
+            class="w-full"
+          />
+          <input
+            type="number"
+            v-model.number="localWidth"
+            @blur="emitValues"
+            @keyup.enter="emitValues"
+            @change="emitValues"
+            min="0"
+            max="300"
+            step="1"
+            placeholder="155"
+            class="p-2 border border-gray-300 rounded-md w-16"
+          /> mm
+        </div>
       </div>
 
-      <!-- Depth input -->
+      <!-- Depth input with slider -->
       <div class="flex-1 mb-4">
         <label class="block text-sm font-medium text-gray-700">Depth (mm):</label>
-        <input
-          v-model.number="localDepth"
-          @blur="emitValues"
-          @keyup.enter="emitValues"
-          @change="emitValues"
-          type="number"
-          placeholder="105"
-          class="mt-1 p-2 border border-gray-300 rounded-md w-full"
-        />
+        <div class="flex items-center space-x-2 mt-1">
+          <input
+            type="range"
+            v-model.number="localDepth"
+            @input="emitValues"
+            min="0"
+            max="300"
+            step="1"
+            class="w-full"
+          />
+          <input
+            type="number"
+            v-model.number="localDepth"
+            @blur="emitValues"
+            @keyup.enter="emitValues"
+            @change="emitValues"
+            min="0"
+            max="300"
+            step="1"
+            placeholder="105"
+            class="p-2 border border-gray-300 rounded-md w-16"
+          /> mm
+        </div>
       </div>
 
-      <!-- Safety Offset input -->
+      <!-- Safety Offset input (unchanged) -->
       <div class="flex-1 mb-4">
         <label class="block text-sm font-medium text-gray-700">Safety Offset (mm):</label>
         <div class="flex items-center space-x-2 mt-1">
           <input
             type="range"
             v-model.number="localSafety"
-            @blur="emitValues"
-            @keyup.enter="emitValues"
-            @change="emitValues"
+            @input="emitValues"
             min="-2"
             max="2"
             step="0.1"
@@ -60,7 +86,7 @@
             step="0.1"
             placeholder="0"
             class="p-2 border border-gray-300 rounded-md w-16"
-          />
+          /> mm
         </div>
       </div>
     </form>
@@ -93,3 +119,4 @@ export default {
   }
 };
 </script>
+

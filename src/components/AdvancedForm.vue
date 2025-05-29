@@ -6,35 +6,63 @@
       class="flex flex-col sm:flex-row sm:flex-wrap sm:space-x-4 items-end mt-4"
       style="width: 100%; max-width: 600px; margin: 0 auto; box-sizing: border-box;"
     >
-      <!-- Bottom Height input -->
+      <!-- Bottom Height input with slider -->
       <div class="flex-1 mb-4">
         <label class="block text-sm font-medium text-gray-700">Bottom Height (mm):</label>
-        <input
-          v-model.number="localBottomHeight"
-          @blur="emitValues"
-          @keyup.enter="emitValues"
-          @change="emitValues"
-          type="number"
-          placeholder="15"
-          class="mt-1 p-2 border border-gray-300 rounded-md w-full"
-        />
+        <div class="flex items-center space-x-2 mt-1">
+          <input
+            type="range"
+            v-model.number="localBottomHeight"
+            @input="emitValues"
+            min="0"
+            max="100"
+            step="1"
+            class="w-full"
+          />
+          <input
+            type="number"
+            v-model.number="localBottomHeight"
+            @blur="emitValues"
+            @keyup.enter="emitValues"
+            @change="emitValues"
+            min="0"
+            max="100"
+            step="1"
+            placeholder="15"
+            class="p-2 border border-gray-300 rounded-md w-16"
+          /> mm
+        </div>
       </div>
 
-      <!-- Top Height input -->
+      <!-- Top Height input with slider -->
       <div class="flex-1 mb-4">
         <label class="block text-sm font-medium text-gray-700">Top Height (mm):</label>
-        <input
-          v-model.number="localTopHeight"
-          @blur="emitValues"
-          @keyup.enter="emitValues"
-          @change="emitValues"
-          type="number"
-          placeholder="25"
-          class="mt-1 p-2 border border-gray-300 rounded-md w-full"
-        />
+        <div class="flex items-center space-x-2 mt-1">
+          <input
+            type="range"
+            v-model.number="localTopHeight"
+            @input="emitValues"
+            min="0"
+            max="100"
+            step="1"
+            class="w-full"
+          />
+          <input
+            type="number"
+            v-model.number="localTopHeight"
+            @blur="emitValues"
+            @keyup.enter="emitValues"
+            @change="emitValues"
+            min="0"
+            max="100"
+            step="1"
+            placeholder="25"
+            class="p-2 border border-gray-300 rounded-md w-16"
+          /> mm
+        </div>
       </div>
 
-      <!-- Border Thickness input -->
+      <!-- Border Thickness input (unchanged) -->
       <div class="flex-1 mb-4">
         <label class="block text-sm font-medium text-gray-700">Border Thickness (mm):</label>
         <input
@@ -61,9 +89,9 @@ export default {
   },
   data() {
     return {
-      localBottomHeight:   this.initialBottomHeight,
-      localTopHeight:      this.initialTopHeight,
-      localBorderThickness:this.initialBorderThickness
+      localBottomHeight:    this.initialBottomHeight,
+      localTopHeight:       this.initialTopHeight,
+      localBorderThickness: this.initialBorderThickness
     };
   },
   methods: {
@@ -77,4 +105,3 @@ export default {
   }
 };
 </script>
-
