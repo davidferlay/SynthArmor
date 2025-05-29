@@ -56,7 +56,7 @@
               type="range"
               v-model.number="local.backHoleHeight"
               min="0"
-              max="300"
+              :max="bottomHeight"
               step="1"
               class="flex-1"
             />
@@ -64,6 +64,7 @@
               type="number"
               v-model.number="local.backHoleHeight"
               min="0"
+	      :max="bottomHeight"
               class="p-2 border border-gray-300 rounded-md w-16"
             />
             <span class="text-sm text-gray-700">mm</span>
@@ -125,7 +126,7 @@
               type="range"
               v-model.number="local.frontHoleHeight"
               min="0"
-              max="300"
+              :max="bottomHeight"
               step="1"
               class="flex-1"
             />
@@ -133,6 +134,7 @@
               type="number"
               v-model.number="local.frontHoleHeight"
               min="0"
+	      :max="bottomHeight"
               class="p-2 border border-gray-300 rounded-md w-16"
             />
             <span class="text-sm text-gray-700">mm</span>
@@ -194,7 +196,7 @@
               type="range"
               v-model.number="local.rightHoleHeight"
               min="0"
-              max="300"
+              :max="bottomHeight"
               step="1"
               class="flex-1"
             />
@@ -202,6 +204,7 @@
               type="number"
               v-model.number="local.rightHoleHeight"
               min="0"
+	      :max="bottomHeight"
               class="p-2 border border-gray-300 rounded-md w-16"
             />
             <span class="text-sm text-gray-700">mm</span>
@@ -263,7 +266,7 @@
               type="range"
               v-model.number="local.leftHoleHeight"
               min="0"
-              max="300"
+              :max="bottomHeight"
               step="1"
               class="flex-1"
             />
@@ -271,6 +274,7 @@
               type="number"
               v-model.number="local.leftHoleHeight"
               min="0"
+	      :max="bottomHeight"
               class="p-2 border border-gray-300 rounded-md w-16"
             />
             <span class="text-sm text-gray-700">mm</span>
@@ -303,7 +307,9 @@ export default {
     initialEnableLeftHole:   { type: Boolean, default: false },
     initialLeftHoleXOffset:  { type: Number,  default: 0     },
     initialLeftHoleWidth:    { type: Number,  default: 55    },
-    initialLeftHoleHeight:   { type: Number,  default: 10    }
+    initialLeftHoleHeight:   { type: Number,  default: 10    },
+
+    bottomHeight:            { type: Number,  required: true }
   },
   data() {
     return {

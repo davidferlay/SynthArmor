@@ -56,7 +56,7 @@
         :initial-border-thickness="borderThickness"
         @update-advanced="updateAdvanced"
       />
-      <!-- new hole-options fieldset -->
+      <!-- Hole-options fieldset -->
       <HoleOptionsForm
         :initial-enable-back-hole="enableBackHole"
         :initial-back-hole-x-offset="backHoleXOffset"
@@ -77,6 +77,8 @@
         :initial-left-hole-x-offset="leftHoleXOffset"
         :initial-left-hole-width="leftHoleWidth"
         :initial-left-hole-height="leftHoleHeight"
+
+        :bottom-height="bottomHeight"
 
         @update-hole-options="updateHoleOptions"
       />
