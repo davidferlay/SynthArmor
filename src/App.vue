@@ -93,6 +93,10 @@
 
     <!-- FAQ Section -->
     <FAQ />
+    <!-- Version info at the very bottom -->
+    <footer class="mt-4 text-sm text-gray-500 text-center">
+      {{ version }}
+    </footer>
   </div>
 </template>
 
@@ -141,6 +145,12 @@ export default {
       leftHoleWidth:    55,
       leftHoleHeight:   10
     };
+  },
+  computed: {
+    version() {
+      // fallback to “local” if env-var isn't set
+      return import.meta.env.VITE_APP_VERSION || 'local';
+    }
   },
   methods: {
     updateBasic({ width, depth, safety }) {

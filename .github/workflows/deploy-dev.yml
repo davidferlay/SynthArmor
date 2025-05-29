@@ -8,6 +8,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      VITE_APP_VERSION: ${{ github.sha }}
 
     steps:
       - name: Checkout
