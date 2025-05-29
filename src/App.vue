@@ -1,25 +1,21 @@
 <template>
-  <!-- Main container -->
   <div class="max-w-3xl mx-auto min-h-screen flex flex-col justify-center items-center p-6">
     <!-- Logo -->
     <img src="/SynthArmor_logo.png" alt="SynthArmor Logo" class="w-40 mb-4" />
 
     <div class="mb-8 text-center">
-      <!-- <h1 class="text-4xl font-bold mb-2">SynthArmor</h1> -->
       <p class="text-gray-600">
         Modify the dimensions of a 3D model and download your custom design instantly.
       </p>
     </div>
 
     <div class="w-full max-w-[600px] bg-white rounded shadow p-6">
-      <!-- Basic form fields above the 3D preview -->
       <BasicForm
         :initial-width="width"
         :initial-depth="depth"
         :initial-safety="safety"
         @update-dimensions="updateBasic"
       />
-      <!-- 3D Preview with ref -->
       <ModelViewer
         ref="modelViewer"
         :width="width"
@@ -49,14 +45,12 @@
         :left-hole-width="leftHoleWidth"
         :left-hole-height="leftHoleHeight"
       />
-      <!-- Advanced form fields below the 3D preview -->
       <AdvancedForm
         :initial-bottom-height="bottomHeight"
         :initial-top-height="topHeight"
         :initial-border-thickness="borderThickness"
         @update-advanced="updateAdvanced"
       />
-      <!-- Hole-options fieldset -->
       <HoleOptionsForm
         :initial-enable-back-hole="enableBackHole"
         :initial-back-hole-x-offset="backHoleXOffset"
@@ -79,10 +73,8 @@
         :initial-left-hole-height="leftHoleHeight"
 
         :bottom-height="bottomHeight"
-
         @update-hole-options="updateHoleOptions"
       />
-      <!-- Download Button -->
       <button
         @click="downloadModel"
         class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 block mx-auto"
@@ -93,10 +85,20 @@
 
     <!-- FAQ Section -->
     <FAQ />
-    <!-- Version info at the very bottom -->
-    <footer class="mt-4 text-sm text-gray-500 text-center">
-      {{ version }}
+
+    <!-- Footer with Version & Terms -->
+    <footer class="mt-4 text-sm text-gray-500 text-center space-x-4">
+      <span>{{ version }}</span>
+      <button
+        @click="showTerms = true"
+        class="underline hover:text-gray-700"
+      >
+        Terms
+      </button>
     </footer>
+
+    <!-- Terms Modal -->
+    <TermsModal v-model:visible="showTerms" />
   </div>
 </template>
 
@@ -106,6 +108,7 @@ import AdvancedForm from './components/AdvancedForm.vue';
 import ModelViewer from './components/ModelViewer.vue';
 import FAQ from './components/FAQ.vue';
 import HoleOptionsForm from './components/HoleOptionsForm.vue';
+import TermsModal from './components/TermsModal.vue';
 
 export default {
   name: 'App',
@@ -114,7 +117,8 @@ export default {
     AdvancedForm,
     ModelViewer,
     FAQ,
-    HoleOptionsForm
+    HoleOptionsForm,
+    TermsModal
   },
   data() {
     return {
@@ -143,12 +147,13 @@ export default {
       enableLeftHole:   false,
       leftHoleXOffset:  0,
       leftHoleWidth:    55,
-      leftHoleHeight:   10
+      leftHoleHeight:   10,
+
+      showTerms: false
     };
   },
   computed: {
     version() {
-      // fallback to “local” if env-var isn't set
       return import.meta.env.VITE_APP_VERSION || 'local';
     }
   },
@@ -167,10 +172,8 @@ export default {
       Object.assign(this, opts);
     },
     downloadModel() {
-      // Call the download function on the ModelViewer component via its ref
       this.$refs.modelViewer.downloadSTL();
     }
   }
 };
 </script>
-
