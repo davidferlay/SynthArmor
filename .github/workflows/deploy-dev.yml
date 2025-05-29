@@ -8,12 +8,15 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      VITE_APP_VERSION: ${{ github.sha }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: Get short SHA
+        run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Setup Node
         uses: actions/setup-node@v3
@@ -24,6 +27,8 @@ jobs:
         run: npm install
 
       - name: Build (dev)
+        env:
+          VITE_APP_VERSION: ${{ env.SHORT_SHA }}
         run: |
           export DEPLOY_ENV=development
           npm run build
@@ -36,4 +41,3 @@ jobs:
           destination_dir: dev  # this will go to /dev/ under gh-pages
           publish_branch: gh-pages
           keep_files: true
-
