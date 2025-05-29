@@ -4,7 +4,7 @@
   <img
     src="public/SynthArmor_logo.png"
     alt="SynthArmor Logo"
-    style="width:30%; height:auto;"
+    style="width:20%; height:auto;"
   />
 </p>
 
