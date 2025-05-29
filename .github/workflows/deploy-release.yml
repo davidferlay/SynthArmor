@@ -25,10 +25,20 @@ jobs:
           export DEPLOY_ENV=production
           npm run build
 
-      - name: Deploy to GitHub Pages (release)
+      - name: Deploy to GitHub Pages (release root)
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           publish_branch: gh-pages
+          keep_files: true
+
+      - name: Deploy to GitHub Pages (release subpath)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          destination_dir: ${{ github.event.release.name }}
+          publish_branch: gh-pages
+          keep_files: true
 
