@@ -11,7 +11,7 @@
         <div v-if="local.enableBackHole" class="space-y-2">
           <!-- Offset X -->
           <div class="flex items-center space-x-2">
-            <label class="w-24 text-sm text-gray-700">Offset X:</label>
+            <label class="w-24 text-sm text-gray-700">Position:</label>
             <input
               type="range"
               v-model.number="local.backHoleXOffset"
@@ -80,7 +80,7 @@
         <div v-if="local.enableFrontHole" class="space-y-2">
           <!-- Offset X -->
           <div class="flex items-center space-x-2">
-            <label class="w-24 text-sm text-gray-700">Offset X:</label>
+            <label class="w-24 text-sm text-gray-700">Position:</label>
             <input
               type="range"
               v-model.number="local.frontHoleXOffset"
@@ -149,7 +149,7 @@
         <div v-if="local.enableRightHole" class="space-y-2">
           <!-- Offset X -->
           <div class="flex items-center space-x-2">
-            <label class="w-24 text-sm text-gray-700">Offset X:</label>
+            <label class="w-24 text-sm text-gray-700">Position:</label>
             <input
               type="range"
               v-model.number="local.rightHoleXOffset"
@@ -218,7 +218,7 @@
         <div v-if="local.enableLeftHole" class="space-y-2">
           <!-- Offset X -->
           <div class="flex items-center space-x-2">
-            <label class="w-24 text-sm text-gray-700">Offset X:</label>
+            <label class="w-24 text-sm text-gray-700">Position:</label>
             <input
               type="range"
               v-model.number="local.leftHoleXOffset"
