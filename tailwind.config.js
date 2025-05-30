@@ -1,3 +1,6 @@
+// tailwind.config.js
+const typography = require('@tailwindcss/typography');
+
 module.exports = {
   content: [
     './index.html',
@@ -6,6 +9,8 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    typography,
+  ],
 };
 
