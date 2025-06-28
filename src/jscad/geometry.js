@@ -164,56 +164,70 @@ export function createGeometry({
   );
 
   // --- Triangular supports connecting bottom and top borders ---
-  // Helper function to create a solid wedge shape
+  // Helper function to create a solid wedge shape with angled ends
   const createWedge = (length) => {
-    // Create a wedge using polyhedron
-    // The wedge has a right-angled triangle cross-section
+    // Create a triangular wedge using polyhedron with 45-degree angled ends
+    const halfLength = length / 2;
+    const cut = borderThickness; // 45-degree angle cut depth
+    
     const points = [
       // Bottom face (at z=0)
-      [-length/2, 0, 0],               // 0: back-left
-      [length/2, 0, 0],                // 1: front-left
-      [length/2, borderThickness, 0],  // 2: front-right
-      [-length/2, borderThickness, 0], // 3: back-right
-      // Top edge (at z=borderThickness)
-      [-length/2, 0, borderThickness], // 4: back-top
-      [length/2, 0, borderThickness]   // 5: front-top
+      [-halfLength + cut, 0, 0],              // 0: back-left corner (angled)
+      [halfLength - cut, 0, 0],               // 1: front-left corner (angled)
+      [halfLength, cut, 0],                   // 2: front-right inner
+      [-halfLength, cut, 0],                  // 3: back-right inner
+      [-halfLength, borderThickness, 0],      // 4: back-right outer
+      [halfLength, borderThickness, 0],       // 5: front-right outer
+      // Top edge points (triangular top at z=borderThickness)
+      [-halfLength + cut, 0, borderThickness], // 6: back top (angled)
+      [halfLength - cut, 0, borderThickness],  // 7: front top (angled)
     ];
     
     const faces = [
-      [0, 3, 2, 1],    // bottom face
-      [0, 1, 5, 4],    // left face (slanted)
-      [2, 3, 4, 5],    // right face (vertical)
-      [0, 4, 3],       // back face
-      [1, 2, 5],       // front face
-      [4, 5, 2, 3]     // top face (not needed but included for completeness)
+      // Bottom face
+      [0, 3, 4, 5, 2, 1],
+      // Slanted face (the hypotenuse of the triangle)
+      [0, 1, 7, 6],
+      // Front angled end faces
+      [1, 2, 7],
+      [2, 5, 7],
+      // Back angled end faces  
+      [0, 6, 3],
+      [3, 6, 4],
+      // Right vertical face
+      [5, 4, 6, 7],
+      // End triangles
+      [2, 3, 0, 1],  // Inner vertical face where cut meets
+      [4, 3, 2, 5]   // Outer vertical face
     ];
     
     return polyhedron({ points, faces });
   };
 
   // Front support - runs along the front edge
-  const frontWedge = createWedge(topInnerWidth + cornerOverlap);
+  // Add borderThickness*2 to compensate for angled cuts on both ends
+  const frontWedge = createWedge(effectiveWidth + borderThickness * 2);
   const frontSupport = translate(
     [0, effectiveDepth/2, 0],
     frontWedge
   );
 
   // Back support - runs along the back edge
-  const backWedge = createWedge(topInnerWidth + cornerOverlap);
+  const backWedge = createWedge(effectiveWidth + borderThickness * 2);
   const backSupport = translate(
     [0, -effectiveDepth/2, 0],
     rotateZ(Math.PI, backWedge)
   );
 
   // Right support - runs along the right edge
-  const rightWedge = createWedge(topInnerDepth + cornerOverlap);
+  const rightWedge = createWedge(effectiveDepth + borderThickness * 2);
   const rightSupport = translate(
     [effectiveWidth/2, 0, 0],
     rotateZ(-Math.PI/2, rightWedge)
   );
 
   // Left support - runs along the left edge
-  const leftWedge = createWedge(topInnerDepth + cornerOverlap);
+  const leftWedge = createWedge(effectiveDepth + borderThickness * 2);
   const leftSupport = translate(
     [-effectiveWidth/2, 0, 0],
     rotateZ(Math.PI/2, leftWedge)
