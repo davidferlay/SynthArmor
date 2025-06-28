@@ -1,7 +1,8 @@
 // src/jscad/geometry.js
 
-import { cuboid } from '@jscad/modeling/src/primitives/index.js';
+import { cuboid, polyhedron } from '@jscad/modeling/src/primitives/index.js';
 import { translate } from '@jscad/modeling/src/operations/transforms/translate.js';
+import { rotateX, rotateY, rotateZ } from '@jscad/modeling/src/operations/transforms/index.js';
 import subtract from '@jscad/modeling/src/operations/booleans/subtract.js';
 
 export function createGeometry({
@@ -162,6 +163,62 @@ export function createGeometry({
     cuboid({ size: [ topInnerWidth + cornerOverlap, topInnerDepth + cornerOverlap, borderThickness ] })
   );
 
+  // --- Triangular supports connecting bottom and top borders ---
+  // Helper function to create a solid wedge shape
+  const createWedge = (length) => {
+    // Create a wedge using polyhedron
+    // The wedge has a right-angled triangle cross-section
+    const points = [
+      // Bottom face (at z=0)
+      [-length/2, 0, 0],               // 0: back-left
+      [length/2, 0, 0],                // 1: front-left
+      [length/2, borderThickness, 0],  // 2: front-right
+      [-length/2, borderThickness, 0], // 3: back-right
+      // Top edge (at z=borderThickness)
+      [-length/2, 0, borderThickness], // 4: back-top
+      [length/2, 0, borderThickness]   // 5: front-top
+    ];
+    
+    const faces = [
+      [0, 3, 2, 1],    // bottom face
+      [0, 1, 5, 4],    // left face (slanted)
+      [2, 3, 4, 5],    // right face (vertical)
+      [0, 4, 3],       // back face
+      [1, 2, 5],       // front face
+      [4, 5, 2, 3]     // top face (not needed but included for completeness)
+    ];
+    
+    return polyhedron({ points, faces });
+  };
+
+  // Front support - runs along the front edge
+  const frontWedge = createWedge(topInnerWidth + cornerOverlap);
+  const frontSupport = translate(
+    [0, effectiveDepth/2, 0],
+    frontWedge
+  );
+
+  // Back support - runs along the back edge
+  const backWedge = createWedge(topInnerWidth + cornerOverlap);
+  const backSupport = translate(
+    [0, -effectiveDepth/2, 0],
+    rotateZ(Math.PI, backWedge)
+  );
+
+  // Right support - runs along the right edge
+  const rightWedge = createWedge(topInnerDepth + cornerOverlap);
+  const rightSupport = translate(
+    [effectiveWidth/2, 0, 0],
+    rotateZ(-Math.PI/2, rightWedge)
+  );
+
+  // Left support - runs along the left edge
+  const leftWedge = createWedge(topInnerDepth + cornerOverlap);
+  const leftSupport = translate(
+    [-effectiveWidth/2, 0, 0],
+    rotateZ(Math.PI/2, leftWedge)
+  );
+
   return [
     bottomFrontBorderFinal,
     bottomBackBorderFinal,
@@ -171,7 +228,11 @@ export function createGeometry({
     topInnerBackBorder,
     topInnerRightBorder,
     topInnerLeftBorder,
-    topCover
+    topCover,
+    frontSupport,
+    backSupport,
+    rightSupport,
+    leftSupport
   ];
 }
 
