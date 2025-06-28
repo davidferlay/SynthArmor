@@ -133,8 +133,10 @@ export function createGeometry({
 
   // --- Top borders (anchored at z=0, grow upward) ---
   const topZ = topHeight / 2;
-  const topInnerWidth = effectiveWidth  - borderThickness/2;
-  const topInnerDepth = effectiveDepth  - borderThickness/2;
+  // Make the inside edge thicker by increasing the inset
+  const topInsetAmount = borderThickness * 2; // This creates a thicker inside edge
+  const topInnerWidth = effectiveWidth  - topInsetAmount;
+  const topInnerDepth = effectiveDepth  - topInsetAmount;
 
   const topInnerFrontBorder = translate(
     [ 0,  topInnerDepth/2 + borderThickness/2, topZ ],
