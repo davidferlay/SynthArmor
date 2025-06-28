@@ -2,8 +2,10 @@
 
 import { cuboid, polyhedron } from '@jscad/modeling/src/primitives/index.js';
 import { translate } from '@jscad/modeling/src/operations/transforms/translate.js';
-import { rotateX, rotateY, rotateZ } from '@jscad/modeling/src/operations/transforms/index.js';
+import { rotateX, rotateY, rotateZ, scale } from '@jscad/modeling/src/operations/transforms/index.js';
+import { extrudeLinear } from '@jscad/modeling/src/operations/extrusions/index.js';
 import subtract from '@jscad/modeling/src/operations/booleans/subtract.js';
+import union from '@jscad/modeling/src/operations/booleans/union.js';
 
 export function createGeometry({
   width,
@@ -35,7 +37,16 @@ export function createGeometry({
   enableLeftHole  = false,
   leftHoleXOffset = 0,
   leftHoleWidth   = 55,
-  leftHoleHeight  = 10
+  leftHoleHeight  = 10,
+
+  // Logo options
+  logoEnabled = false,
+  logoSvgContent = '',
+  logoWidth = 30,
+  logoHeight = 30,
+  logoDepth = 1,
+  logoXOffset = 0,
+  logoYOffset = 0
 }) {
   const cornerOverlap   = borderThickness * 2;
   const effectiveWidth  = width  + safety;
@@ -233,6 +244,44 @@ export function createGeometry({
     rotateZ(Math.PI/2, leftWedge)
   );
 
+  // --- Logo processing ---
+  let finalTopCover = topCover;
+  
+  console.log('Logo check - enabled:', logoEnabled, 'hasContent:', !!logoSvgContent, 'depth:', logoDepth);
+  
+  if (logoEnabled && logoSvgContent) {
+    try {
+      // For now, create a simple rectangular logo as a placeholder
+      // TODO: Implement proper SVG parsing when ES6 module support is available
+      console.log('Creating logo with dimensions:', logoWidth, 'x', logoHeight, 'x', logoDepth);
+      
+      // Create a simple rectangular logo
+      const logoRect = cuboid({ 
+        size: [logoWidth, logoHeight, Math.abs(logoDepth)] 
+      });
+      
+      // Position logo on top surface
+      // Top surface is at: topHeight + borderThickness
+      const topSurfaceZ = topHeight + borderThickness;
+      const logoZ = topSurfaceZ + (logoDepth > 0 ? Math.abs(logoDepth)/2 : -Math.abs(logoDepth)/2);
+      const positionedLogo = translate([logoXOffset, logoYOffset, logoZ], logoRect);
+      
+      // Apply logo to top cover
+      if (logoDepth > 0) {
+        // Raised logo - add to top cover
+        console.log('Adding raised logo');
+        finalTopCover = union(topCover, positionedLogo);
+      } else {
+        // Engraved logo - subtract from top cover
+        console.log('Subtracting engraved logo');
+        finalTopCover = subtract(topCover, positionedLogo);
+      }
+    } catch (error) {
+      console.error('Error processing logo:', error);
+      // If logo processing fails, use original top cover
+    }
+  }
+
   return [
     bottomFrontBorderFinal,
     bottomBackBorderFinal,
@@ -242,7 +291,7 @@ export function createGeometry({
     topInnerBackBorder,
     topInnerRightBorder,
     topInnerLeftBorder,
-    topCover,
+    finalTopCover,
     frontSupport,
     backSupport,
     rightSupport,

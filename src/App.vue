@@ -44,6 +44,14 @@
         :left-hole-x-offset="leftHoleXOffset"
         :left-hole-width="leftHoleWidth"
         :left-hole-height="leftHoleHeight"
+        
+        :logo-enabled="logoEnabled"
+        :logo-svg-content="logoSvgContent"
+        :logo-width="logoWidth"
+        :logo-height="logoHeight"
+        :logo-depth="logoDepth"
+        :logo-x-offset="logoXOffset"
+        :logo-y-offset="logoYOffset"
       />
       <AdvancedForm
         :initial-bottom-height="bottomHeight"
@@ -74,6 +82,17 @@
 
         :bottom-height="bottomHeight"
         @update-hole-options="updateHoleOptions"
+      />
+      <LogoUploadForm
+        :logo-enabled="logoEnabled"
+        :logo-svg-content="logoSvgContent"
+        :logo-width="logoWidth"
+        :logo-height="logoHeight"
+        :logo-depth="logoDepth"
+        :logo-x-offset="logoXOffset"
+        :logo-y-offset="logoYOffset"
+        @update="updateLogoOptions"
+        @svg-uploaded="handleSvgUpload"
       />
       <button
         @click="downloadModel"
@@ -108,6 +127,7 @@ import AdvancedForm from './components/AdvancedForm.vue';
 import ModelViewer from './components/ModelViewer.vue';
 import FAQ from './components/FAQ.vue';
 import HoleOptionsForm from './components/HoleOptionsForm.vue';
+import LogoUploadForm from './components/LogoUploadForm.vue';
 import TermsModal from './components/TermsModal.vue';
 
 export default {
@@ -118,6 +138,7 @@ export default {
     ModelViewer,
     FAQ,
     HoleOptionsForm,
+    LogoUploadForm,
     TermsModal
   },
   data() {
@@ -149,6 +170,15 @@ export default {
       leftHoleWidth:    55,
       leftHoleHeight:   10,
 
+      // Logo parameters
+      logoEnabled: false,
+      logoSvgContent: '',
+      logoWidth: 30,
+      logoHeight: 30,
+      logoDepth: 1,
+      logoXOffset: 0,
+      logoYOffset: 0,
+
       showTerms: false
     };
   },
@@ -170,6 +200,14 @@ export default {
     },
     updateHoleOptions(opts) {
       Object.assign(this, opts);
+    },
+    updateLogoOptions(opts) {
+      console.log('updateLogoOptions called with:', opts);
+      Object.assign(this, opts);
+    },
+    handleSvgUpload(svgContent) {
+      console.log('handleSvgUpload called, content length:', svgContent?.length);
+      this.logoSvgContent = svgContent;
     },
     downloadModel() {
       this.$refs.modelViewer.downloadSTL();

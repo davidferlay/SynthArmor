@@ -25,7 +25,8 @@ export default {
     'enableBackHole','backHoleXOffset','backHoleWidth','backHoleHeight',
     'enableFrontHole','frontHoleXOffset','frontHoleWidth','frontHoleHeight',
     'enableRightHole','rightHoleXOffset','rightHoleWidth','rightHoleHeight',
-    'enableLeftHole','leftHoleXOffset','leftHoleWidth','leftHoleHeight'
+    'enableLeftHole','leftHoleXOffset','leftHoleWidth','leftHoleHeight',
+    'logoEnabled','logoSvgContent','logoWidth','logoHeight','logoDepth','logoXOffset','logoYOffset'
   ],
 
   data() {
@@ -70,7 +71,15 @@ export default {
         enableLeftHole:    this.enableLeftHole,
         leftHoleXOffset:   this.leftHoleXOffset,
         leftHoleWidth:     this.leftHoleWidth,
-        leftHoleHeight:    this.leftHoleHeight
+        leftHoleHeight:    this.leftHoleHeight,
+
+        logoEnabled:       this.logoEnabled,
+        logoSvgContent:    this.logoSvgContent,
+        logoWidth:         this.logoWidth,
+        logoHeight:        this.logoHeight,
+        logoDepth:         this.logoDepth,
+        logoXOffset:       this.logoXOffset,
+        logoYOffset:       this.logoYOffset
       };
     }
   },
@@ -79,6 +88,11 @@ export default {
     allOptions: {
       deep: true,
       handler(newOpts, oldOpts) {
+        console.log('ModelViewer allOptions changed:', { 
+          logoEnabled: newOpts.logoEnabled, 
+          hasContent: !!newOpts.logoSvgContent,
+          depth: newOpts.logoDepth 
+        });
         if (!oldOpts) return;
         const dims = ['width','depth','safety','bottomHeight','topHeight','borderThickness'];
         const dimsChanged = dims.some(key => newOpts[key] !== oldOpts[key]);
@@ -122,8 +136,14 @@ export default {
     generateSTL(width, depth, safety, bottomHeight, topHeight, borderThickness) {
       const clamp = v => Math.max(0, Number(v) || 0);
 
+      // Use provided parameters or fall back to props
       const opts = {
-        width, depth, safety, bottomHeight, topHeight, borderThickness,
+        width: width ?? this.width,
+        depth: depth ?? this.depth,
+        safety: safety ?? this.safety,
+        bottomHeight: bottomHeight ?? this.bottomHeight,
+        topHeight: topHeight ?? this.topHeight,
+        borderThickness: borderThickness ?? this.borderThickness,
 
         enableBackHole:   this.enableBackHole,
         backHoleXOffset:  this.backHoleXOffset,
@@ -143,7 +163,15 @@ export default {
         enableLeftHole:    this.enableLeftHole,
         leftHoleXOffset:   this.leftHoleXOffset,
         leftHoleWidth:     this.leftHoleWidth,
-        leftHoleHeight:    clamp(this.leftHoleHeight)
+        leftHoleHeight:    clamp(this.leftHoleHeight),
+
+        logoEnabled:       this.logoEnabled,
+        logoSvgContent:    this.logoSvgContent,
+        logoWidth:         this.logoWidth,
+        logoHeight:        this.logoHeight,
+        logoDepth:         this.logoDepth,
+        logoXOffset:       this.logoXOffset,
+        logoYOffset:       this.logoYOffset
       };
 
       try {
